@@ -2,11 +2,13 @@
 name = "reserva-app"
 version = "0.1.0"
 description = ""
-authors = ["Domingos Lucas <domingos.latorre@gmail.com>"]
+authors = ["Rodrigo Bettio <rodriguinhobettiojr1@gmail.com>"]
 readme = "README.md"
 
 [tool.poetry.dependencies]
 python = "^3.11"
+flask = "^3.0.3"
+jinja2 = "^3.1.4"
 
 
 [build-system]
