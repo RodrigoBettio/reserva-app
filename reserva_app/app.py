@@ -2,7 +2,7 @@ from flask import Flask, render_template, request
 import os
 
 app = Flask(__name__, template_folder=os.path.abspath('templates'))
-
+usuarios = []
 @app.route("/")
 def home():
     return render_template ("login.html")
@@ -13,15 +13,12 @@ def cadastrar_sala():
 
 @app.route("/cadastro")
 def cadastro():
+    print(usuarios)
     return render_template ("cadastro.html")
 
 @app.route("/listar_salas")
 def listar_salas():
     return render_template("listar_salas.html")
-
-@app.route("/login")
-def login():
-    return render_template ("login.html")
 
 @app.route("/reservar_sala")
 def reservar_sala():
@@ -34,6 +31,30 @@ def reservas():
 @app.route("/reserva/detalhe_reserva")
 def detalhe_reserva():
     return render_template("/reserva/detalhe_reserva.html")
+
+@app.route("/", methods = ['POST'])
+def cadastrar_usuario():
+    nome, email, password = obter_dados()
+    add_banco(nome, email, password)
+    
+    return render_template("login.html", usuarios = usuarios)
+
+def add_banco(nome, email, password):
+    """Adiciona os dados do usuário no banco de dados (No caso, arquivo csv)"""
+    usuario = {"nome": nome, "email": email, "password": password}
+
+    with open("usuarios_cadastrados.csv", "a") as arquivo_usuarios:
+        dados = f"\n{nome},{email},{password}"
+        arquivo_usuarios.write(dados)
+        
+
+def obter_dados():
+    """Obtem nome, email e password de um formulário e retorna os mesmos"""
+    nome = request.form['nome'] 
+    email = request.form['email']
+    password = request.form['password']
+
+    return nome, email, password
 app.run(debug=True)
 
  
