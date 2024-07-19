@@ -41,14 +41,17 @@ def cadastrar_usuario():
     return render_template("login.html")
 
 def add_banco(nome, email, password):
-    """Adiciona os dados do usuário no arquivo CSV."""
+    """Adiciona os dados do usuário no arquivo CSV conferindo se o cabeçalho está escrito."""
+    with open("usuarios_cadastrados.csv", "r") as arquivo_usuarios:
+        if arquivo_usuarios.readline() == "":
+            with open("usuarios_cadastrados.csv", "a", newline="") as arquivo_usuarios:
+                escritor_csv = csv.writer(arquivo_usuarios)
+                escritor_csv.writerow(["nome", "email", "password"])  
 
     with open("usuarios_cadastrados.csv", "a", newline="") as arquivo_usuarios:
         escritor_csv = csv.writer(arquivo_usuarios)
-        escritor_csv.writerow(["nome", "email", "password"])  
-
         escritor_csv.writerow([nome, email, password])
-    
+        
 def obter_dados():
     """Obtem nome, email e password de um formulário e retorna os mesmos"""
     nome = request.form['nome'] 
@@ -71,9 +74,7 @@ def verificacao_usuario(email, password):
         for linha in leitor_csv:
             if linha["email"] == email and linha["password"] == password:
                 return True
-            else:
-                return False
-
+        return False
 
 @app.route("/", methods = ['POST'])
 def login():
