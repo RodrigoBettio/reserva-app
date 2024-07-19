@@ -45,8 +45,9 @@ def cadastrar_usuario():
 @app.route("/", methods = ['POST'])
 def login():
     email, password = obter_dados_login()
-    if verificacao_usuario(email, password) == True:
-        return render_template("reservas.html")
+    verificacao_resultado, nome_usuario = verificacao_usuario(email, password)
+    if verificacao_resultado == True:
+        return render_template("reservas.html", nome_usuario = nome_usuario)
     else:
         return render_template("login.html", erro="O email ou senha estão incorretos, tente novamente")
 

@@ -34,5 +34,5 @@ def verificacao_usuario(email, password):
         leitor_csv = csv.DictReader(arquivo_usuarios)
         for linha in leitor_csv:
             if linha["email"] == email and linha["password"] == password:
-                return True
+                return True, linha ["nome"]
         return False
