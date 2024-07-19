@@ -64,11 +64,12 @@ def obter_dados_login():
 
     return email, password
 
-def verificacao_usuario(email_login, password_login):
-    with open("usuarios_cadastrados", "r") as arquivo_usuarios:
+def verificacao_usuario(email, password):
+    """Verifica se os dados de email e password existem no banco de dados (No caso, arquivo csv)"""
+    with open("usuarios_cadastrados.csv", "r") as arquivo_usuarios:
         leitor_csv = csv.DictReader(arquivo_usuarios)
         for linha in leitor_csv:
-            if linha["email"] == email_login and linha["password_login"] == password_login:
+            if linha["email"] == email and linha["password"] == password:
                 return True
             else:
                 return False
@@ -76,18 +77,11 @@ def verificacao_usuario(email_login, password_login):
 
 @app.route("/", methods = ['POST'])
 def login():
-    email_login, password_login = obter_dados_login()
-    verificacao_usuario(email_login, password_login)
-    if email_login and password_login: #constar no csv
-
-
-        return ("reservas.html")
-    
+    email, password = obter_dados_login()
+    if verificacao_usuario(email, password) == True:
+        return render_template("reservas.html")
     else:
-
-
-        print("O email ou senha estão incorretos, tente novamente")
-        return render_template("login.html")
+        return render_template("login.html", erro="O email ou senha estão incorretos, tente novamente")
 
 
 app.run(debug=True)
