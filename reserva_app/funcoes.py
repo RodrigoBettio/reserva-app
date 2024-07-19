@@ -36,6 +36,8 @@ def obter_dados():
         password = None
     return nome, sobrenome, email, password
 
+
+    
 def verificacao_usuario(email, password):
     """Verifica se os dados de email e password existem no banco de dados (No caso, arquivo csv)"""
     with open("csv/usuarios_cadastrados.csv", "r") as arquivo_usuarios:
@@ -43,4 +45,13 @@ def verificacao_usuario(email, password):
         for linha in leitor_csv:
             if linha["email"] == email and linha["password"] == password:
                 return True, linha ["nome"]
+        return False, None
+    
+def procurar_reserva(nome, sobrenome):
+    """Procura no arquivo usuarios_reserva, se existe alguma reserva no nome do usuário"""
+    with open("csv/usuarios_reserva.csv","r") as arquivo_reserva:
+        leitor_csv = csv.DictReader(arquivo_reserva)
+        for linha in leitor_csv:
+            if linha["nome"] == nome and linha["sobrenome"] == sobrenome:
+                return True, list(linha.values())
         return False, None

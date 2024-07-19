@@ -1,5 +1,5 @@
 from flask import Flask, render_template
-from reserva_app.funcoes import add_banco, obter_dados, verificacao_usuario
+from reserva_app.funcoes import add_banco, obter_dados, verificacao_usuario, procurar_reserva
 import os
 
 
@@ -73,7 +73,17 @@ def login():
 
 @app.route("/filtrar", methods = ["POST"])
 def filtrar():
-   nome, sobrenome,_,_ = obter_dados()
-   return render_template("teste.html", nome = nome, sobrenome = sobrenome)
+    nome, sobrenome,_,_ = obter_dados() 
+    if nome == "":
+        return render_template("reservas.html", erro = "Digite o seu nome")
+    elif sobrenome == "":
+        return render_template("reservas.html", erro = "Digite o seu sobrenome também")
+    else:
+        verificacao_usuario, linha =  procurar_reserva(nome, sobrenome)
+        if verificacao_usuario == True:
+            return render_template("reservas.html", linha = linha)
+        else: 
+            return render_template("reservas.html", erro = "Reserva não encontrada. Digite novamente ou faça a reserva no nosso site")
+    
 
 app.run(debug=True)
