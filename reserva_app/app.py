@@ -58,10 +58,12 @@ def cadastrar_usuario():
 @app.route("/", methods = ['POST'])
 def login():
     _,_,email, password = obter_dados()
-    if password == "":
-        return render_template ("login.html", erro = "Você deve inserir uma senha")
+    if email == "" and password == "":
+        return render_template ("login.html", erro = "Você deve inserir um email e senha")
     elif email == "":
         return render_template ("login.html", erro = "Você deve inserir um email")
+    elif password == "":
+        return render_template ("login.html", erro = "Você deve inserir uma senha")
     else:
         verificacao_resultado, nome_usuario = verificacao_usuario(email, password)
         if verificacao_resultado == True:
