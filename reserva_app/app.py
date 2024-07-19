@@ -1,5 +1,6 @@
 from flask import Flask, render_template, request
 import os
+import csv
 
 app = Flask(__name__, template_folder=os.path.abspath('templates'))
 
@@ -40,12 +41,13 @@ def cadastrar_usuario():
     return render_template("login.html")
 
 def add_banco(nome, email, password):
-    """Adiciona os dados do usuário no banco de dados (No caso, arquivo csv)"""
-    usuario = {"nome": nome, "email": email, "password": password}
+    """Adiciona os dados do usuário no arquivo CSV."""
 
-    with open("usuarios_cadastrados.csv", "a") as arquivo_usuarios:
-        dados = f"\n{usuario}"
-        arquivo_usuarios.write(dados)
+    with open("usuarios_cadastrados.csv", "a", newline="") as arquivo_usuarios:
+        escritor_csv = csv.writer(arquivo_usuarios)
+        escritor_csv.writerow(["nome", "email", "password"])  
+
+        escritor_csv.writerow([nome, email, password])
     
 def obter_dados():
     """Obtem nome, email e password de um formulário e retorna os mesmos"""
@@ -54,4 +56,38 @@ def obter_dados():
     password = request.form['password']
 
     return nome, email, password
+
+def obter_dados_login():
+    """Obtem email e password de um formulário e retorna os mesmos"""
+    email = request.form['email']
+    password = request.form['password']
+
+    return email, password
+
+def verificacao_usuario(email_login, password_login):
+    with open("usuarios_cadastrados", "r") as arquivo_usuarios:
+        leitor_csv = csv.DictReader(arquivo_usuarios)
+        for linha in leitor_csv:
+            if linha["email"] == email_login and linha["password_login"] == password_login:
+                return True
+            else:
+                return False
+
+
+@app.route("/", methods = ['POST'])
+def login():
+    email_login, password_login = obter_dados_login()
+    verificacao_usuario(email_login, password_login)
+    if email_login and password_login: #constar no csv
+
+
+        return ("reservas.html")
+    
+    else:
+
+
+        print("O email ou senha estão incorretos, tente novamente")
+        return render_template("login.html")
+
+
 app.run(debug=True)
