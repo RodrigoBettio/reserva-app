@@ -1,5 +1,5 @@
 from flask import Flask, render_template
-from reserva_app.funcoes import add_banco, obter_dados, obter_dados_login, verificacao_usuario,obter_dados_filtro
+from reserva_app.funcoes import add_banco, obter_dados, verificacao_usuario
 import os
 
 
@@ -37,25 +37,41 @@ def detalhe_reserva():
 @app.route("/cadastro", methods = ['POST'])
 def cadastrar_usuario():
     nome, sobrenome, email, password = obter_dados()
-    add_banco(nome, sobrenome, email, password)
+    if nome == "":
+        return render_template("cadastro.html", erro = "Você não tem nome?")
+    
+    elif sobrenome == "":
+        return render_template("cadastro.html", erro = "Seus pais esqueceram do seu sobrenome?")
+    
+    elif email == "":
+        return render_template("cadastro.html", erro = "Algum email deve estar disponível...")
+    
+    elif password == "":
+        return render_template("cadastro.html", erro = "Última vez que não coloquei senha em algo não tive um bom resultado...")
+    
+    else:
+        add_banco(nome, sobrenome, email, password)
     
     return render_template("login.html")
 
 #Rota usada para ler infos do login
 @app.route("/", methods = ['POST'])
 def login():
-    email, password = obter_dados_login()
-    verificacao_resultado, nome_usuario = verificacao_usuario(email, password)
-    if verificacao_resultado == True:
-        return render_template("reservas.html", nome_usuario = nome_usuario)
+    _,_,email, password = obter_dados()
+    if password == "":
+        return render_template ("login.html", erro = "Você deve inserir uma senha")
+    elif email == "":
+        return render_template ("login.html", erro = "Você deve inserir um email")
     else:
-        return render_template("login.html", erro="O email ou senha estão incorretos, tente novamente")
+        verificacao_resultado, nome_usuario = verificacao_usuario(email, password)
+        if verificacao_resultado == True:
+            return render_template("reservas.html", nome_usuario = nome_usuario)
+        else:
+            return render_template("login.html", erro="O email ou senha estão incorretos, tente novamente")
 
 @app.route("/filtrar", methods = ["POST"])
 def filtrar():
-   nome, sobrenome = obter_dados_filtro()
+   nome, sobrenome,_,_ = obter_dados()
    return render_template("teste.html", nome = nome, sobrenome = sobrenome)
-
-
 
 app.run(debug=True)
