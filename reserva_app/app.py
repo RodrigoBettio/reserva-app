@@ -1,5 +1,5 @@
 from flask import Flask, render_template
-from reserva_app.funcoes import add_banco, obter_dados, obter_dados_login, verificacao_usuario
+from reserva_app.funcoes import add_banco, obter_dados, obter_dados_login, verificacao_usuario,obter_dados_filtro
 import os
 
 
@@ -36,8 +36,8 @@ def detalhe_reserva():
 #Rota usada para cadastro de usuários
 @app.route("/cadastro", methods = ['POST'])
 def cadastrar_usuario():
-    nome, email, password = obter_dados()
-    add_banco(nome, email, password)
+    nome, sobrenome, email, password = obter_dados()
+    add_banco(nome, sobrenome, email, password)
     
     return render_template("login.html")
 
@@ -50,6 +50,12 @@ def login():
         return render_template("reservas.html", nome_usuario = nome_usuario)
     else:
         return render_template("login.html", erro="O email ou senha estão incorretos, tente novamente")
+
+@app.route("/filtrar", methods = ["POST"])
+def filtrar():
+   nome, sobrenome = obter_dados_filtro()
+   return render_template("teste.html", nome = nome, sobrenome = sobrenome)
+
 
 
 app.run(debug=True)
