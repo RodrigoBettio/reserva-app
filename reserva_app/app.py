@@ -1,5 +1,5 @@
 from flask import Flask, render_template, session
-from reserva_app.funcoes import add_banco, obter_dados, verificacao_usuario, procurar_reserva
+from reserva_app.funcoes import add_banco_usuarios, add_banco_salas, obter_dados, verificacao_usuario, procurar_reserva, adicionar_sala
 import os
 
  
@@ -50,7 +50,7 @@ def cadastrar_usuario():
         return render_template("cadastro.html", erro = "Última vez que não coloquei senha em algo não tive um bom resultado...", nome = nome, sobrenome = sobrenome, email = email)
     
     else:
-        add_banco(nome, sobrenome, email, password)
+        add_banco_usuarios(nome, sobrenome, email, password)
     
     return render_template("login.html")
 
@@ -65,13 +65,15 @@ def login():
     elif password == "":
         return render_template ("login.html", erro = "Você deve inserir uma senha", email = email)
     else:
-        verificacao_resultado, nome_usuario = verificacao_usuario(email, password)
+        verificacao_resultado, nome_usuario, sobrenome_usuario = verificacao_usuario(email, password)
         if verificacao_resultado == True:
             session["nome_usuario"] = nome_usuario
+            session["sobrenome_usuario"] = sobrenome_usuario
             return render_template("reservas.html", nome_usuario = nome_usuario)
         else:
             return render_template("login.html", erro="O email ou senha estão incorretos, tente novamente")
 
+#Rota usada para filtragem na página de reservas
 @app.route("/filtrar", methods = ["POST"])
 def filtrar():
     nome, sobrenome,_,_ = obter_dados() 
@@ -87,5 +89,15 @@ def filtrar():
         else: 
             return render_template("reservas.html", erro = "Reserva não encontrada. Digite novamente ou faça a reserva no nosso site", linha = None, nome_usuario = nome_usuario)
     
+#Rota usada para reserva de salas
+@app.route("/reservar_sala")
+def reservas_sala():
+    nome_usuario = session.get("nome_usuario") 
+    sobrenome = session.get("sobrenome_usuario") 
+    dados_reserva = adicionar_sala(nome_usuario, sobrenome)
+    add_banco_salas (dados_reserva)
+    
+    
+
 app.secret_key = 'teste_sessao' 
 app.run(debug=True)
