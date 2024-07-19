@@ -75,15 +75,15 @@ def login():
 def filtrar():
     nome, sobrenome,_,_ = obter_dados() 
     if nome == "":
-        return render_template("reservas.html", erro = "Digite o seu nome")
+        return render_template("reservas.html", erro = "Digite o seu nome", linha = None)
     elif sobrenome == "":
-        return render_template("reservas.html", erro = "Digite o seu sobrenome também")
+        return render_template("reservas.html", erro = "Digite o seu sobrenome também", linha = None)
     else:
         verificacao_usuario, linha =  procurar_reserva(nome, sobrenome)
         if verificacao_usuario == True:
             return render_template("reservas.html", linha = linha)
         else: 
-            return render_template("reservas.html", erro = "Reserva não encontrada. Digite novamente ou faça a reserva no nosso site")
+            return render_template("reservas.html", erro = "Reserva não encontrada. Digite novamente ou faça a reserva no nosso site", linha = None)
     
 
 app.run(debug=True)
