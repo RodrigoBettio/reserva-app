@@ -92,10 +92,11 @@ def filtrar():
 #Rota usada para reserva de salas
 @app.route("/reservar_sala", methods =["POST"])
 def reservas_sala():
-    nome_usuario = session.get("nome_usuario") 
+    nome = session.get("nome_usuario") 
     sobrenome = session.get("sobrenome_usuario") 
     sala, data_inicio, hora_inicio, data_final, hora_final = obter_dados_sala()
-    add_banco_salas (nome_usuario, sobrenome, sala, data_inicio, hora_inicio, data_final, hora_final)
+    
+    add_banco_salas (nome, sobrenome, sala, data_inicio, hora_inicio, data_final, hora_final)
     
     return render_template ("reserva/detalhe_reserva.html")
 

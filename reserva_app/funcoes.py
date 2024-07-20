@@ -27,7 +27,7 @@ def obter_dados():
         password = None
     return nome, sobrenome, email, password
 
-def add_banco_salas(nome_usuario,sobrenome_usuario,sala,data_inicio,hora_inicio,data_final,hora_final):
+def add_banco_salas(nome,sobrenome,sala,data_inicio,hora_inicio,data_final,hora_final):
     """Adiciona os dados da sala no arquivo CSV conferindo se o cabeçalho está escrito."""
     with open("csv/usuarios_reserva.csv", "r") as arquivo_reservas:
         if arquivo_reservas.readline() == "":
@@ -37,7 +37,7 @@ def add_banco_salas(nome_usuario,sobrenome_usuario,sala,data_inicio,hora_inicio,
 
     with open("csv/usuarios_reserva.csv", "a", newline="") as arquivo_reservas:
         escritor_csv = csv.writer(arquivo_reservas)
-        escritor_csv.writerow([nome_usuario, sobrenome_usuario, sala, data_inicio, hora_inicio, data_final, hora_final])
+        escritor_csv.writerow([nome, sobrenome, sala, data_inicio, hora_inicio, data_final, hora_final])
    
 
 def add_banco_usuarios(nome, sobrenome, email, password):
@@ -82,11 +82,10 @@ def conversao(infos):
 def obter_dados_sala():
     """Obtem os dados de um formulário com infos de uma reserva de sala e retorna os mesmos"""
 
-    sala_str = request.form("sala") 
+    sala = request.form("sala") 
     infos_inicio = request.form("inicio") #Converter em duas strings, data_inicio e hora_inicio
     infos_fim = request.form("fim") #Converter em data_fim e hora_fim
 
-    sala = int(sala_str)
     data_inicio, hora_inicio = conversao(infos_inicio)
     data_final, hora_final = conversao(infos_fim) #Fazer na mesma função, a lógica é a mesma
 
