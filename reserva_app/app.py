@@ -1,5 +1,5 @@
 from flask import Flask, render_template, session
-from reserva_app.funcoes import add_banco_usuarios, add_banco_salas, obter_dados, verificacao_usuario, procurar_reserva, adicionar_sala
+from reserva_app.funcoes import add_banco_usuarios, add_banco_salas, obter_dados,obter_dados_sala, verificacao_usuario, procurar_reserva
 import os
 
  
@@ -29,7 +29,7 @@ def reservar_sala():
 def reservas():
     return render_template("reservas.html")
 
-@app.route("/reserva/detalhe_reserva")
+@app.route("/reserva/detalhe_reserva", methods = ["POST"])
 def detalhe_reserva():
     return render_template("/reserva/detalhe_reserva.html")
 
@@ -69,7 +69,7 @@ def login():
         if verificacao_resultado == True:
             session["nome_usuario"] = nome_usuario
             session["sobrenome_usuario"] = sobrenome_usuario
-            return render_template("reservas.html", nome_usuario = nome_usuario)
+            return render_template("reservas.html", nome_usuario = nome_usuario, email = email)
         else:
             return render_template("login.html", erro="O email ou senha estão incorretos, tente novamente")
 
@@ -87,17 +87,17 @@ def filtrar():
         if verificacao_usuario == True:
             return render_template("reservas.html", linha = linha, nome_usuario = nome_usuario)
         else: 
-            return render_template("reservas.html", erro = "Reserva não encontrada. Digite novamente ou faça a reserva no nosso site", linha = None, nome_usuario = nome_usuario)
+            return render_template("reservas.html", erro = "Reserva não encontrada. Digite novamente ou faça a reserva no nosso site", linha = None, nome_usuario = nome_usuario, nome = nome)
     
 #Rota usada para reserva de salas
-@app.route("/reservar_sala")
+@app.route("/reservar_sala", methods =["POST"])
 def reservas_sala():
     nome_usuario = session.get("nome_usuario") 
     sobrenome = session.get("sobrenome_usuario") 
-    dados_reserva = adicionar_sala(nome_usuario, sobrenome)
-    add_banco_salas (dados_reserva)
+    sala, data_inicio, hora_inicio, data_final, hora_final = obter_dados_sala()
+    add_banco_salas (nome_usuario, sobrenome, sala, data_inicio, hora_inicio, data_final, hora_final)
     
-    
+    return render_template ("reserva/detalhe_reserva.html")
 
 app.secret_key = 'teste_sessao' 
 app.run(debug=True)

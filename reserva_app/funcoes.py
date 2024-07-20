@@ -1,5 +1,6 @@
 from flask import request
 import csv
+from datetime import datetime
 
 def obter_dados():
     """Obtem nome, sobrenome, email e password de um formulário e retorna os mesmos"""
@@ -26,8 +27,18 @@ def obter_dados():
         password = None
     return nome, sobrenome, email, password
 
-def add_banco_salas():
+def add_banco_salas(nome_usuario,sobrenome_usuario,sala,data_inicio,hora_inicio,data_final,hora_final):
     """Adiciona os dados da sala no arquivo CSV conferindo se o cabeçalho está escrito."""
+    with open("csv/usuarios_reserva.csv", "r") as arquivo_reservas:
+        if arquivo_reservas.readline() == "":
+            with open("usuarios_reserva.csv", "a", newline="") as arquivo_reservas:
+                escritor_csv = csv.writer(arquivo_reservas)
+                escritor_csv.writerow(["nome","sobrenome", "sala", "data_inicio", "hora_inicio", "data_final", "hora_final"])  
+
+    with open("csv/usuarios_reserva.csv", "a", newline="") as arquivo_reservas:
+        escritor_csv = csv.writer(arquivo_reservas)
+        escritor_csv.writerow([nome_usuario, sobrenome_usuario, sala, data_inicio, hora_inicio, data_final, hora_final])
+   
 
 def add_banco_usuarios(nome, sobrenome, email, password):
     """Adiciona os dados do usuário no arquivo CSV conferindo se o cabeçalho está escrito."""
@@ -59,23 +70,24 @@ def procurar_reserva(nome, sobrenome):
                 return True, list(linha.values())
         return False, None
     
-def obter_dados_sala(nome_usuario, sobrenome_usuario):
+
+def conversao(infos):
+        infos_convertida = datetime.fromisoformat(infos) #Converte a string infos em um objeto da biblioteca datetime
+
+        data_inicio = infos_convertida.strftime("%d-%m-%Y") #Modelo dia, mes, ano
+        hora_inicio = infos_convertida.strftime("%H:%M") #Modelo hora e minuto
+
+        return data_inicio, hora_inicio
+
+def obter_dados_sala():
     """Obtem os dados de um formulário com infos de uma reserva de sala e retorna os mesmos"""
-    dados_reserva = []
-    sala = request.form("sala") #Passar como int
+
+    sala_str = request.form("sala") 
     infos_inicio = request.form("inicio") #Converter em duas strings, data_inicio e hora_inicio
     infos_fim = request.form("fim") #Converter em data_fim e hora_fim
 
+    sala = int(sala_str)
     data_inicio, hora_inicio = conversao(infos_inicio)
-    data_fim, hora_fim = conversao(infos_fim) #Fazer na mesma função, a lógica é a mesma
-#Fazer a conversão antes de passar
-    dados_reserva.append(nome_usuario) #Pensar em passar como uma lista ou valores absolutos
-    dados_reserva.append(sobrenome_usuario)
-    dados_reserva.append(sala)
-    dados_reserva.append(data_inicio)
-    dados_reserva.append(hora_inicio)
-    dados_reserva.append(data_fim)
-    dados_reserva.append(hora_fim)
+    data_final, hora_final = conversao(infos_fim) #Fazer na mesma função, a lógica é a mesma
 
-
-    dados_reserva
+    return sala, data_inicio, hora_inicio, data_final, hora_final
