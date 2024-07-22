@@ -40,3 +40,5 @@ Aplicação de exemplo para aulas sobre desenvolvimento web backend e criação 
   - data e hora fim
   - ativa
   
+
+  Feito por Rodrigo Bettio, Leticia Rudeli, Lucas Milhomem e Rafael Oliveira
