@@ -70,16 +70,19 @@
 
 <p>Seja Bem-Vindo {{nome_usuario}}</p>
 
-{% if linha %} 
-<h2>Detalhes da Reserva</h2>
-<p>Nome: {{ linha[0] }}</p>
-<p>Sobrenome: {{ linha[1] }}</p>
-<p>Sala: {{ linha[2] }}</p>
-<p>Data de Início: {{ linha[3] }}</p>
-<p>Hora de Início: {{ linha[4] }}</p>
-<p>Data Final: {{ linha[5] }}</p>
-<p>Hora Final: {{ linha[6] }}</p>
-{% endif %}
+{% if reservas %} 
+{% for dados in reservas %}
 
+<h2>Reserva {{loop.index}}</h2>
+<p>Nome: {{ dados[0] }}</p>
+<p>Sobrenome: {{ dados[1] }}</p>
+<p>Sala: {{ dados[2] }}</p>
+<p>Data de Início: {{ dados[3] }}</p>
+<p>Hora de Início: {{ dados[4] }}</p>
+<p>Data Final: {{ dados[5] }}</p>
+<p>Hora Final: {{ dados[6] }}</p>
+
+{% endfor %}
+{% endif %}
 {{erro}}
 </html>

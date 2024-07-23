@@ -6,18 +6,19 @@ def obter_dados():
     """Obtem nome, sobrenome, email e password de um formulário e retorna os mesmos"""
     if "nome" in request.form:
         nome = request.form['nome'] 
-        nome = nome.title()
+        nome = nome.title().strip()
     else: 
         nome = None
 
     if "sobrenome" in request.form:
         sobrenome = request.form['sobrenome'] 
-        sobrenome = sobrenome.title()
+        sobrenome = sobrenome.title().strip()
     else: 
         sobrenome = None
 
     if "email" in request.form:
         email = request.form['email']
+        email = email.strip()
     else: 
         email = None  
     
@@ -63,11 +64,16 @@ def verificacao_usuario(email, password):
     
 def procurar_reserva(nome, sobrenome):
     """Procura no arquivo usuarios_reserva, se existe alguma reserva no nome do usuário"""
-    with open("csv/usuarios_reserva.csv","r") as arquivo_reserva:
+    reservas_encontradas = [] 
+    with open("csv/usuarios_reserva.csv", "r") as arquivo_reserva:
         leitor_csv = csv.DictReader(arquivo_reserva)
         for linha in leitor_csv:
             if linha["nome"] == nome and linha["sobrenome"] == sobrenome:
-                return True, list(linha.values())
+                reservas_encontradas.append(list(linha.values())) 
+
+    if reservas_encontradas: 
+        return True, reservas_encontradas
+    else:
         return False, None
     
 

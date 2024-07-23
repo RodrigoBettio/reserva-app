@@ -83,11 +83,11 @@ def filtrar():
     elif sobrenome == "":
         return render_template("reservas.html", erro = "Digite o seu sobrenome também", linha = None, nome = nome, nome_usuario = nome_usuario)
     else:
-        verificacao_usuario, linha =  procurar_reserva(nome, sobrenome)
+        verificacao_usuario, reservas =  procurar_reserva(nome, sobrenome)
         if verificacao_usuario == True:
-            return render_template("reservas.html", linha = linha, nome_usuario = nome_usuario)
+            return render_template("reservas.html", reservas = reservas, nome_usuario = nome_usuario)
         else: 
-            return render_template("reservas.html", erro = "Reserva não encontrada. Digite novamente ou faça a reserva no nosso site", linha = None, nome_usuario = nome_usuario, nome = nome)
+            return render_template("reservas.html", erro = "Reserva não encontrada. Digite novamente ou faça a reserva no nosso site", reservas = None, nome_usuario = nome_usuario, nome = nome)
     
 #Rota usada para reserva de salas
 @app.route("/reserva/detalhe_reserva", methods =["POST"])
@@ -95,13 +95,9 @@ def reservas_sala():
     nome_usuario = session.get("nome_usuario") 
     sobrenome_usuario = session.get("sobrenome_usuario") 
     sala, data_inicio, hora_inicio, data_final, hora_final = obter_dados_sala()
-    
     add_banco_salas (nome_usuario, sobrenome_usuario, sala, data_inicio, hora_inicio, data_final, hora_final)
 
     return render_template ("reserva/detalhe_reserva.html", nome_usuario = nome_usuario, sobrenome_usuario = sobrenome_usuario, sala = sala)
 
 app.secret_key = 'teste_sessao' 
 app.run(debug=True)
-
-# 1º Resolver problema de rota
-# 2º Resolver problema da sala
