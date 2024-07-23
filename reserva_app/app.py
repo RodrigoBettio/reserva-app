@@ -29,7 +29,7 @@ def reservar_sala():
 def reservas():
     return render_template("reservas.html")
 
-@app.route("/reserva/detalhe_reserva", methods = ["POST"])
+@app.route("/reserva/detalhe_reserva", methods =["GET"])
 def detalhe_reserva():
     return render_template("/reserva/detalhe_reserva.html")
 
@@ -90,15 +90,18 @@ def filtrar():
             return render_template("reservas.html", erro = "Reserva não encontrada. Digite novamente ou faça a reserva no nosso site", linha = None, nome_usuario = nome_usuario, nome = nome)
     
 #Rota usada para reserva de salas
-@app.route("/reservar_sala", methods =["POST"])
+@app.route("/reserva/detalhe_reserva", methods =["POST"])
 def reservas_sala():
-    nome = session.get("nome_usuario") 
-    sobrenome = session.get("sobrenome_usuario") 
+    nome_usuario = session.get("nome_usuario") 
+    sobrenome_usuario = session.get("sobrenome_usuario") 
     sala, data_inicio, hora_inicio, data_final, hora_final = obter_dados_sala()
     
-    add_banco_salas (nome, sobrenome, sala, data_inicio, hora_inicio, data_final, hora_final)
-    
-    return render_template ("reserva/detalhe_reserva.html")
+    add_banco_salas (nome_usuario, sobrenome_usuario, sala, data_inicio, hora_inicio, data_final, hora_final)
+
+    return render_template ("reserva/detalhe_reserva.html", nome_usuario = nome_usuario, sobrenome_usuario = sobrenome_usuario)
 
 app.secret_key = 'teste_sessao' 
 app.run(debug=True)
+
+# 1º Resolver problema de rota
+# 2º Resolver problema da sala

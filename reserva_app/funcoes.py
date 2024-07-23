@@ -59,7 +59,7 @@ def verificacao_usuario(email, password):
         for linha in leitor_csv:
             if linha["email"] == email and linha["password"] == password:
                 return True, linha ["nome"], linha["sobrenome"]
-        return False, None
+        return False, None, None
     
 def procurar_reserva(nome, sobrenome):
     """Procura no arquivo usuarios_reserva, se existe alguma reserva no nome do usuário"""
@@ -74,15 +74,15 @@ def procurar_reserva(nome, sobrenome):
 def conversao(infos):
         infos_convertida = datetime.fromisoformat(infos) #Converte a string infos em um objeto da biblioteca datetime
 
-        data_inicio = infos_convertida.strftime("%d-%m-%Y") #Modelo dia, mes, ano
-        hora_inicio = infos_convertida.strftime("%H:%M") #Modelo hora e minuto
+        data = infos_convertida.strftime("%d-%m-%Y") #Modelo dia, mes, ano
+        hora = infos_convertida.strftime("%H:%M") #Modelo hora e minuto
 
-        return data_inicio, hora_inicio
+        return data, hora
 
 def obter_dados_sala():
     """Obtem os dados de um formulário com infos de uma reserva de sala e retorna os mesmos"""
 
-    sala = request.form("sala") 
+    sala = request.form("sala") #Retorna uma string 1, 2 ou 3 
     infos_inicio = request.form("inicio") #Converter em duas strings, data_inicio e hora_inicio
     infos_fim = request.form("fim") #Converter em data_fim e hora_fim
 
