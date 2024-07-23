@@ -66,7 +66,7 @@ def login():
         return render_template ("login.html", erro = "Você deve inserir uma senha", email = email)
     else:
         verificacao_resultado, nome_usuario, sobrenome_usuario = verificacao_usuario(email, password)
-        if verificacao_resultado == True:
+        if verificacao_resultado:
             session["nome_usuario"] = nome_usuario
             session["sobrenome_usuario"] = sobrenome_usuario
             return render_template("reservas.html", nome_usuario = nome_usuario, email = email)
@@ -98,7 +98,7 @@ def reservas_sala():
     
     add_banco_salas (nome_usuario, sobrenome_usuario, sala, data_inicio, hora_inicio, data_final, hora_final)
 
-    return render_template ("reserva/detalhe_reserva.html", nome_usuario = nome_usuario, sobrenome_usuario = sobrenome_usuario)
+    return render_template ("reserva/detalhe_reserva.html", nome_usuario = nome_usuario, sobrenome_usuario = sobrenome_usuario, sala = sala)
 
 app.secret_key = 'teste_sessao' 
 app.run(debug=True)
