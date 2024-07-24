@@ -84,7 +84,7 @@ def filtrar():
         return render_template("reservas.html", erro = "Digite o seu sobrenome também", linha = None, nome = nome, nome_usuario = nome_usuario)
     else:
         verificacao_usuario, reservas =  procurar_reserva(nome, sobrenome)
-        if verificacao_usuario == True:
+        if verificacao_usuario:
             return render_template("reservas.html", reservas = reservas, nome_usuario = nome_usuario)
         else: 
             return render_template("reservas.html", erro = "Reserva não encontrada. Digite novamente ou faça a reserva no nosso site", reservas = None, nome_usuario = nome_usuario, nome = nome)
@@ -105,10 +105,12 @@ def minha_reserva():
     sobrenome_usuario = session.get("sobrenome_usuario") 
 
     verificacao_usuario, reservas =  procurar_reserva(nome_usuario, sobrenome_usuario)
-    if verificacao_usuario == True:
-        return render_template("minha_reserva.html", reservas = reservas, nome_usuario = nome_usuario)
-    else: 
+
+    if verificacao_usuario == False:
         return render_template("minha_reserva.html", erro = "Não acredito que você ainda não possui reservas no nosso site :( ", reservas = None, nome_usuario = nome_usuario)
+    elif verificacao_usuario == True:
+        return render_template("minha_reserva.html", reservas = reservas, nome_usuario = nome_usuario) 
+        
 
 app.secret_key = 'teste_sessao' 
 app.run(debug=True)
