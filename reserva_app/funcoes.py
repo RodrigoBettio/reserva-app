@@ -31,12 +31,24 @@ def obter_dados():
 def obter_dados_sala():
     """Obtem os dados de um formulário com infos de uma reserva de sala e retorna os mesmos"""
 
-    sala = request.form["sala"] #Retorna uma string 1, 2 ou 3 
-    infos_inicio = request.form["inicio"] #Converter em duas strings, data_inicio e hora_inicio
-    infos_fim = request.form["fim"] #Converter em data_fim e hora_fim
+    if "sala" in request.form:
+        sala = request.form["sala"]
+    else:
+        sala = None
 
-    data_inicio, hora_inicio = conversao(infos_inicio)
-    data_final, hora_final = conversao(infos_fim) #Fazer na mesma função, a lógica é a mesma
+    if "inicio" in request.form:
+        infos_inicio = request.form["inicio"]
+        data_inicio, hora_inicio = conversao(infos_inicio)
+
+    else:
+        infos_inicio = None
+
+    if "fim" in request.form:
+        infos_fim = request.form["fim"]
+        data_final, hora_final = conversao(infos_fim) 
+
+    else:
+        infos_fim = None
 
     return sala, data_inicio, hora_inicio, data_final, hora_final
 
