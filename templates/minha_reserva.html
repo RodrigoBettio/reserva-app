@@ -4,26 +4,11 @@
 
 <div class="row mt-4 justify-content-center">
     <div class="col-md-10">
-        <h2 class="display-7 text-primary text-center">Seja Bem-Vindo {{nome_usuario}}</h2>
         <div class="card">
             <div class="card-header bg-light">
-                <h1 class="text-center">Reservas</h1>
+                <h1 class="text-center">Suas Reservas</h1>
             </div>
             <div class="card-body">
-                <form action="/filtrar" method="POST">
-                    <div class="row mt-4">
-                        <div class="col">
-                            <input type="text" class="form-control" placeholder="Nome" aria-label="Nome" name="nome"
-                                value="{{nome}}">
-                        </div>
-                        <div class="col">
-                            <input type="text" class="form-control" placeholder="Sobrenome" aria-label="Sobrenome"
-                                name="sobrenome">
-                        </div>
-                        <div class="col">
-                            <button class="btn btn-dark" type="submit">Filtrar</button>
-                        </div>
-                    </div>
                 </form>
                 {% if reservas %}
                 <div class="row mt-4">

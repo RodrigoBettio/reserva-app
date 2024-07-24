@@ -27,7 +27,8 @@ def reservar_sala():
 
 @app.route("/reservas")
 def reservas():
-    return render_template("reservas.html")
+    nome_usuario = session.get("nome_usuario") 
+    return render_template("reservas.html", nome_usuario = nome_usuario)
 
 @app.route("/reserva/detalhe_reserva", methods =["GET"])
 def detalhe_reserva():
