@@ -18,7 +18,7 @@ def obter_dados():
 
     if "email" in request.form:
         email = request.form['email']
-        email = email.strip()
+        email = email.strip().lower()
     else: 
         email = None  
     

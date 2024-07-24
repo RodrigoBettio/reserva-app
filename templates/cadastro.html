@@ -20,8 +20,15 @@
             <label for="password" class="form-label">Senha</label>
             <input type="password" class="form-control" name="password" id="password">
         </div>
-        <div class="mb-3">
-            <button type="submit" class="btn btn-dark">Cadastrar</button>
+
+        <div class="mb-3 d-flex justify-content-between">
+          <a class="btn btn-primary" href="/">Voltar para o Login</a>
+          {% if erro %}
+          <p class="text-danger">{{ erro }}</p> 
+          {% endif %}
+          <button type="submit" class="btn btn-dark">Cadastrar</button>
         </div>
+
+     
     </form>
 {% endblock %}
