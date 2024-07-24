@@ -2,33 +2,33 @@
 {% block title %}Cadastro{% endblock %}
 
 {% block content %}
-    <h5 class="card-title">Cadastro</h5>
-    <form class="card-text" action="/cadastro" method="post">
-        <div class="mb-3">
-            <label for="nome" class="form-label">Nome</label>
-            <input type="text" class="form-control" name="nome" id="nome" value="{{ nome }}">
-        </div>
-        <div class="mb-3">
-            <label for="sobrenome" class="form-label">Sobrenome</label>
-            <input type="text" class="form-control" name="sobrenome" id="sobrenome" value="{{ sobrenome }}">
-        </div>
-        <div class="mb-3">
-            <label for="email" class="form-label">E-mail</label>
-            <input type="email" class="form-control" name="email" id="email" value="{{ email }}">
-        </div>
-        <div class="mb-3">
-            <label for="password" class="form-label">Senha</label>
-            <input type="password" class="form-control" name="password" id="password">
-        </div>
+<h5 class="card-title">Cadastro</h5>
+<form class="card-text" action="/cadastro" method="post">
+  <div class="mb-3">
+    <label for="nome" class="form-label">Nome</label>
+    <input type="text" class="form-control" name="nome" id="nome" value="{{ nome }}">
+  </div>
+  <div class="mb-3">
+    <label for="sobrenome" class="form-label">Sobrenome</label>
+    <input type="text" class="form-control" name="sobrenome" id="sobrenome" value="{{ sobrenome }}">
+  </div>
+  <div class="mb-3">
+    <label for="email" class="form-label">E-mail</label>
+    <input type="email" class="form-control" name="email" id="email" value="{{ email }}">
+  </div>
+  <div class="mb-3">
+    <label for="password" class="form-label">Senha</label>
+    <input type="password" class="form-control" name="password" id="password">
+  </div>
 
-        <div class="mb-3 d-flex justify-content-between">
-          <a class="btn btn-primary" href="/">Voltar para o Login</a>
-          {% if erro %}
-          <p class="text-danger">{{ erro }}</p> 
-          {% endif %}
-          <button type="submit" class="btn btn-dark">Cadastrar</button>
-        </div>
+  <div class="mb-3 d-flex justify-content-between">
+    <a class="btn btn-primary" href="/">Voltar para o Login</a>
+    {% if erro %}
+    <p class="text-danger">{{ erro }}</p>
+    {% endif %}
+    <button type="submit" class="btn btn-dark">Cadastrar</button>
+  </div>
 
-     
-    </form>
+
+</form>
 {% endblock %}

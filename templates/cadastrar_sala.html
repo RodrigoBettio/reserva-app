@@ -1,39 +1,42 @@
 {% extends "base.html" %}
 {% block title %}Cadastrar Sala{% endblock %}
 {% block content %}
-    <div class="row mt-4">
-        <div class="col">
-            <h1>Cadastrar Sala</h1>
-            <p>Utilize o formulário abaixo para cadastrar uma sala</p>
-        </div>
-    </div>
-    <div>
-        <div class="col">
-            <form action="/reserva/detalhe_reserva">
-                <div class="mb-3">
-                    <label for="tipo" class="form-label">Tipo</label>
-                    <select class="form-select" id="tipo" name="tipo">
-                        <option selected>Selecione um tipo</option>
-                        <option value="1">Laboratório de Informática</option>
-                        <option value="2">Laboratório de Química</option>
-                        <option value="3">Sala de Aula</option>
-                    </select>
-                </div>
-                <div class="mb-3">
-                    <label for="capacidade" class="form-label">Capacidade</label>
-                    <input type="number" class="form-control" name="capacidade" id="capacidade">
-                </div>
-                <div class="mb-3">
-                    <label for="descricao" class="form-label">Descrição</label>
-                    <textarea class="form-control" name="descricao" id="descricao" cols="30" rows="10"></textarea>
-                </div>
-                <button type="submit" class="btn btn-dark">Cadastrar</button>
-            </form>
+<div class="row mt-4 justify-content-center ">
+    <div class="col-md-10">
+        <div class="card">
+            <div class="card-header bg-light">
+                <h1 class="text-center">Cadastrar Sala</h1>
+            </div>
+
+            <div class="card-body">
+                <p class="text-center">Utilize o formulário abaixo para cadastrar uma sala</p>
+
+                <form action="/reserva/detalhe_reserva">
+                    <div class="mb-3">
+                        <label for="tipo" class="form-label">Tipo de Sala</label>
+                        <select class="form-select" id="tipo" name="tipo">
+                            <option selected>Selecione um tipo</option>
+                            <option value="1">Laboratório de Informática</option>
+                            <option value="2">Laboratório de Química</option>
+                            <option value="3">Sala de Aula</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="capacidade" class="form-label">Capacidade</label>
+                        <input type="number" class="form-control" name="capacidade" id="capacidade"
+                            placeholder="Digite a capacidade da sala">
+                    </div>
+                    <div class="mb-3">
+                        <label for="descricao" class="form-label">Descrição</label>
+                        <textarea class="form-control" name="descricao" id="descricao" rows="5"
+                            placeholder="Digite uma descrição da sala"></textarea>
+                    </div>
+                    <div class="text-center">
+                        <button type="submit" class="btn btn-dark">Cadastrar</button>
+                    </div>
+                </form>
+            </div>
         </div>
     </div>
 </div>
 {% endblock %}
-
-
-
-    

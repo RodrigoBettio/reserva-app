@@ -1,42 +1,40 @@
 {% extends "base.html" %}
 {% block title %}Reservar Sala{% endblock %}
 {% block content %}
-<div class="container">
-  <div class="row mt-4">
-    <div class="col">
-      <h1>Reservar Sala</h1>
-      <p>Utilize o formulário abaixo para reservar uma sala</p>
-    </div>
-  </div>
-  <div>
-    <div class="col">
-      <form action="/reserva/detalhe_reserva" method="post">
-        
-        <div class="mb-3">
-          <label for="sala" class="form-label">Sala</label>
-          <select class="form-select" id="sala" name="sala" required>
-            <option selected>Selecione a sala</option>
-            <option value="1">Sala 1</option>
-            <option value="2">Sala 2</option>
-            <option value="3">Sala 3</option>
-          </select>
-        </div>
 
-        <div class="mb-3">
-          <label for="inicio" class="form-label">Data e Hora Início</label>
-          <input type="datetime-local" class="form-control" name="inicio" id="inicio">
-        </div>
-
-        <div class="mb-3">
-          <label for="fim" class="form-label">Data e Hora Fim</label>
-          <input type="datetime-local" class="form-control" name="fim" id="fim">
-        </div>
-
-        <button type="submit" class="btn btn-dark">Reservar</button>
-      </form>
+<div class="row mt-4 justify-content-center">
+  <div class="col-md-10">
+    <div class="card">
+      <div class="card-header bg-light">
+        <h1 class="text-center">Reservar Sala</h1>
+      </div>
+      <div class="card-body">
+        <p class="text-center">Utilize o formulário abaixo para reservar uma sala</p>
+        <form action="/reserva/detalhe_reserva" method="post">
+          <div class="mb-3">
+            <label for="sala" class="form-label">Sala</label>
+            <select class="form-select" id="sala" name="sala" required>
+              <option selected>Selecione a sala</option>
+              <option value="1">Sala 1</option>
+              <option value="2">Sala 2</option>
+              <option value="3">Sala 3</option>
+            </select>
+          </div>
+          <div class="mb-3">
+            <label for="inicio" class="form-label">Data e Hora Início</label>
+            <input type="datetime-local" class="form-control" name="inicio" id="inicio">
+          </div>
+          <div class="mb-3">
+            <label for="fim" class="form-label">Data e Hora Fim</label>
+            <input type="datetime-local" class="form-control" name="fim" id="fim">
+          </div>
+          <div class="text-center">
+            <button type="submit" class="btn btn-dark">Reservar</button>
+          </div>
+        </form>
+      </div>
     </div>
   </div>
 </div>
+
 {% endblock %}
-
-

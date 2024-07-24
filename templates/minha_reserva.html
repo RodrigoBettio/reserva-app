@@ -1,42 +1,58 @@
 {% extends "base.html" %}
-{% block title %}Minhas Reservas{% endblock %}
+{% block title %}Reservas{% endblock %}
 {% block content %}
-<div class="row mt-4">
-    <div class="col">
-      <h1>Reservas</h1>
+
+<div class="row mt-4 justify-content-center">
+    <div class="col-md-10">
+        <h2 class="display-7 text-primary text-center">Seja Bem-Vindo {{nome_usuario}}</h2>
+        <div class="card">
+            <div class="card-header bg-light">
+                <h1 class="text-center">Reservas</h1>
+            </div>
+            <div class="card-body">
+                <form action="/filtrar" method="POST">
+                    <div class="row mt-4">
+                        <div class="col">
+                            <input type="text" class="form-control" placeholder="Nome" aria-label="Nome" name="nome"
+                                value="{{nome}}">
+                        </div>
+                        <div class="col">
+                            <input type="text" class="form-control" placeholder="Sobrenome" aria-label="Sobrenome"
+                                name="sobrenome">
+                        </div>
+                        <div class="col">
+                            <button class="btn btn-dark" type="submit">Filtrar</button>
+                        </div>
+                    </div>
+                </form>
+                {% if reservas %}
+                <div class="row mt-4">
+                    {% for dados in reservas %}
+                    <div class="col-md-4 mb-3">
+                        <div class="card">
+                            <div class="card-header">
+                                <h4 class="display-7 text-center">Reserva {{loop.index}}</h4>
+                            </div>
+                            <div class="card-body">
+                                <p><strong>Nome:</strong> {{ dados[0] }} {{ dados[1] }}</p>
+                                <p><strong>Sala:</strong> {{ dados[2] }}</p>
+                                <p><strong>Data de Início:</strong> {{ dados[3] }} </p>
+                                <p><strong>Hora de Início:</strong> {{ dados[4] }}</p>
+                                <p><strong>Data Final:</strong> {{ dados[5] }}</p>
+                                <p><strong>Hora Final:</strong> {{ dados[6] }}</p>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+                {% endif %}
+
+                {% if erro %}
+                <p class="text-danger">{{ erro }}</p>
+                {% endif %}
+            </div>
+        </div>
     </div>
-  </div>
-  <form action="/filtrar" method="POST" > 
-    <div class="row mt-4">
-      <div class="col">
-        <input type="text" class="form-control" placeholder="First name" aria-label="First name" name="nome" value="{{nome}}">
-      </div>
-      <div class="col">
-        <input type="text" class="form-control" placeholder="Last name" aria-label="Last name" name="sobrenome" >
-      </div>
-      <div class="col">
-        <button class="btn btn-dark" type="submit">Filtrar</button>
-      </div>
-    </div>
-    </form>
-    <p>Seja Bem-Vindo {{nome_usuario}}</p>
-
-  {% if reservas %} 
-  {% for dados in reservas %}
-
-  <h2>Reserva {{loop.index}}</h2>
-  <p>Nome: {{ dados[0] }}</p>
-  <p>Sobrenome: {{ dados[1] }}</p>
-  <p>Sala: {{ dados[2] }}</p>
-  <p>Data de Início: {{ dados[3] }}</p>
-  <p>Hora de Início: {{ dados[4] }}</p>
-  <p>Data Final: {{ dados[5] }}</p>
-  <p>Hora Final: {{ dados[6] }}</p>
-
-  {% endfor %}
-  {% endif %}
-  {{erro}}
 </div>
+
 {% endblock %}
-
-
