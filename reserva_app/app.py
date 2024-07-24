@@ -1,5 +1,5 @@
 from flask import Flask, render_template, session
-from reserva_app.funcoes import add_banco_usuarios, add_banco_salas, obter_dados,obter_dados_sala, verificacao_usuario, procurar_reserva
+from reserva_app.funcoes import add_banco_usuarios, add_banco_reservas, obter_dados,obter_dados_sala, verificacao_usuario, procurar_reserva, formulario_cadastro_salas, add_banco_salas
 import os
 
  
@@ -100,7 +100,7 @@ def reservas_sala():
     if sala == None or data_inicio == None or hora_inicio == None or data_final == None or hora_final == None:
         return render_template("reserva_sala.html", erro = "Você deve preencher todos os campos")
     else:
-        add_banco_salas (nome_usuario, sobrenome_usuario, sala, data_inicio, hora_inicio, data_final, hora_final)
+        add_banco_reservas (nome_usuario, sobrenome_usuario, sala, data_inicio, hora_inicio, data_final, hora_final)
         return render_template ("reserva/detalhe_reserva.html", nome_usuario = nome_usuario, sobrenome_usuario = sobrenome_usuario, sala = sala)
 
 @app.route("/minha_reserva")
@@ -115,6 +115,12 @@ def minha_reserva():
     elif verificacao_usuario == True:
         return render_template("minha_reserva.html", reservas = reservas, nome_usuario = nome_usuario) 
         
+@app.route("/cadastrar_sala", methods = ["POST"])
+def cadastro_sala():
+    tipo, capacidade, descricao = formulario_cadastro_salas()
+    add_banco_salas (tipo,capacidade,descricao)
+
+    return render_template("reserva/detalhe_reserva.html", tipo = tipo, capacidade = capacidade, descricao = descricao)
 
 app.secret_key = 'teste_sessao' 
 app.run(debug=True)

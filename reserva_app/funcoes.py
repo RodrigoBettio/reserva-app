@@ -52,7 +52,7 @@ def obter_dados_sala():
 
     return sala, data_inicio, hora_inicio, data_final, hora_final
 
-def add_banco_salas(nome,sobrenome,sala,data_inicio,hora_inicio,data_final,hora_final):
+def add_banco_reservas(nome,sobrenome,sala,data_inicio,hora_inicio,data_final,hora_final):
     """Adiciona os dados da sala no arquivo CSV conferindo se o cabeçalho está escrito."""
     with open("csv/usuarios_reserva.csv", "r") as arquivo_reservas:
         if arquivo_reservas.readline() == "":
@@ -102,10 +102,43 @@ def procurar_reserva(nome, sobrenome):
     
 
 def conversao(infos):
+        """Converte uma string com data e hora usando a biblioteca datetime, com modelo de dia, mês e ano e hora e minuto"""
         infos_convertida = datetime.fromisoformat(infos) #Converte a string infos em um objeto da biblioteca datetime
 
         data = infos_convertida.strftime("%d-%m-%Y") #Modelo dia, mes, ano
         hora = infos_convertida.strftime("%H:%M") #Modelo hora e minuto
 
         return data, hora
+
+def formulario_cadastro_salas():
+    """Pega tipo, capacidade e descricao de um formulário"""
+    if "tipo" in request.form:
+        tipo = request.form ["tipo"]
+    else:
+        tipo = None
+
+    if "capacidade" in request.form:    
+        capacidade = request.form ["capacidade"]
+    else: 
+        capacidade = None
+    
+    if "descricao" in request.form:
+        descricao = request.form ["descricao"]
+    else:
+        descricao = None
+
+    return tipo, capacidade, descricao
+
+def add_banco_salas(tipo,capacidade,descricao):
+    """Adiciona a salas no banco de dados (Arquivo.csv), recebendo um tipo, capacidade e descricao da sala"""
+
+    with open("csv/salas.csv", "r") as arquivo_salas:
+        if arquivo_salas.readline() == "":
+            with open("salas.csv", "a", newline="") as arquivo_salas:
+                escritor_csv = csv.writer(arquivo_salas)
+                escritor_csv.writerow(["tipo", "capacidade","descricao"])  
+
+    with open("csv/salas.csv", "a", newline="") as arquivo_salas:
+        escritor_csv = csv.writer(arquivo_salas)
+        escritor_csv.writerow([tipo, capacidade, descricao])
 
