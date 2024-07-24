@@ -99,5 +99,16 @@ def reservas_sala():
 
     return render_template ("reserva/detalhe_reserva.html", nome_usuario = nome_usuario, sobrenome_usuario = sobrenome_usuario, sala = sala)
 
+@app.route("/minha_reserva")
+def minha_reserva():
+    nome_usuario = session.get("nome_usuario") 
+    sobrenome_usuario = session.get("sobrenome_usuario") 
+
+    verificacao_usuario, reservas =  procurar_reserva(nome_usuario, sobrenome_usuario)
+    if verificacao_usuario == True:
+        return render_template("minha_reserva.html", reservas = reservas, nome_usuario = nome_usuario)
+    else: 
+        return render_template("minha_reserva.html", erro = "Não acredito que você ainda não possui reservas no nosso site :( ", reservas = None, nome_usuario = nome_usuario)
+
 app.secret_key = 'teste_sessao' 
 app.run(debug=True)
