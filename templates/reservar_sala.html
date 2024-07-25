@@ -29,7 +29,7 @@
             <input type="datetime-local" class="form-control" name="fim" id="fim">
           </div>
           <div class="text-center">
-            <button type="submit" class="btn btn-dark">Reservar</button>
+            <button type="submit" class="btn btn-success">Reservar</button>
           </div>
         </form>
         {% if erro %}
@@ -39,5 +39,13 @@
     </div>
   </div>
 </div>
+
+*Reservar Sala*
+
+- No reservar sala, se clicar em reservar com todos os campos em branco ele dá erro (Nos outros requests não)
+- Se estiver faltando algum campo, também dá erro.
+- O formulário aceita 6 dígitos pra ano, que também gera erro na função 
+- Depois de cadastrar uma nova sala, ela deve aparecer diretamente no campo de sala (Tem que fazer um for no jinja pra ler as salas que existem)
+- Se a sala já estiver ocupada, o usuário não pode reservar (Acho que isso é adicional)
 
 {% endblock %}

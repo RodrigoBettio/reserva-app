@@ -1,4 +1,4 @@
-from flask import Flask, render_template, session
+from flask import Flask, render_template, request, session
 from reserva_app.funcoes import add_banco_usuarios, add_banco_reservas, obter_dados,obter_dados_sala, verificacao_usuario, procurar_reserva, formulario_cadastro_salas, add_banco_salas
 import os
 
@@ -32,7 +32,7 @@ def reservas():
 
 @app.route("/reserva/detalhe_reserva", methods =["GET"])
 def detalhe_reserva():
-    return render_template("/reserva/detalhe_reserva.html")
+    return render_template("reserva/detalhe_reserva.html")
 
 #Rota usada para cadastro de usuários
 @app.route("/cadastro", methods = ['POST'])
@@ -91,17 +91,28 @@ def filtrar():
             return render_template("reservas.html", erro = "Reserva não encontrada. Digite novamente ou faça a reserva no nosso site", reservas = None, nome_usuario = nome_usuario, nome = nome)
     
 #Rota usada para reserva de salas
-@app.route("/reserva/detalhe_reserva", methods =["POST"])
+@app.route("/reserva/detalhes_reserva", methods =["POST"])
 def reservas_sala():
-    nome_usuario = session.get("nome_usuario") 
-    sobrenome_usuario = session.get("sobrenome_usuario") 
-    sala, data_inicio, hora_inicio, data_final, hora_final = obter_dados_sala()
+    # nome_usuario = session.get("nome_usuario") 
+    # sobrenome_usuario = session.get("sobrenome_usuario") 
+    # sala, data_inicio, hora_inicio, data_final, hora_final = obter_dados_sala()
 
-    if sala == None or data_inicio == None or hora_inicio == None or data_final == None or hora_final == None:
-        return render_template("reserva_sala.html", erro = "Você deve preencher todos os campos")
-    else:
-        add_banco_reservas (nome_usuario, sobrenome_usuario, sala, data_inicio, hora_inicio, data_final, hora_final)
-        return render_template ("reserva/detalhe_reserva.html", nome_usuario = nome_usuario, sobrenome_usuario = sobrenome_usuario, sala = sala)
+    # if not sala: 
+    #     return render_template("reserva_sala.html", erro="Você deve selecionar uma sala")
+    # if not data_inicio or not hora_inicio or not data_final or not hora_final:
+    #     return render_template("reserva_sala.html", erro="Você deve preencher todos os campos")
+    # else:
+    #     add_banco_reservas(nome_usuario, sobrenome_usuario, sala, data_inicio, hora_inicio, data_final, hora_final)
+    #     return render_template("reserva/detalhe_reserva.html", nome_usuario=nome_usuario, sobrenome_usuario=sobrenome_usuario, sala=sala)
+
+   nome_usuario = session.get("nome_usuario") 
+   sobrenome_usuario = session.get("sobrenome_usuario") 
+   sala, data_inicio, hora_inicio, data_final, hora_final = obter_dados_sala()   
+   if sala == None or data_inicio == None or hora_inicio == None or data_final == None or hora_final == None:
+       return render_template("reserva_sala.html", erro = "Você deve preencher todos os campos")
+   else:
+       add_banco_reservas (nome_usuario, sobrenome_usuario, sala, data_inicio, hora_inicio, data_final, hora_final)
+       return render_template ("reserva/detalhe_reserva.html", nome_usuario = nome_usuario, sobrenome_usuario = sobrenome_usuario, sala = sala)
 
 @app.route("/minha_reserva")
 def minha_reserva():

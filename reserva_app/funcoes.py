@@ -46,12 +46,12 @@ def obter_dados_sala():
     if "fim" in request.form:
         infos_fim = request.form["fim"]
         data_final, hora_final = conversao(infos_fim) 
-
+ 
     else:
         infos_fim = None
-
+ 
     return sala, data_inicio, hora_inicio, data_final, hora_final
-
+ 
 def add_banco_reservas(nome,sobrenome,sala,data_inicio,hora_inicio,data_final,hora_final):
     """Adiciona os dados da sala no arquivo CSV conferindo se o cabeçalho está escrito."""
     with open("csv/usuarios_reserva.csv", "r") as arquivo_reservas:
