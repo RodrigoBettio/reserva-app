@@ -15,7 +15,7 @@
                     <div class="mb-3">
                         <label for="tipo" class="form-label">Tipo de Sala</label>
                         <select class="form-select" id="tipo" name="tipo">
-                            <option selected>Selecione um tipo</option>
+                            <option selected>Selecione um tipo...</option>
                             <option value="1">Laboratório de Informática</option>
                             <option value="2">Laboratório de Química</option>
                             <option value="3">Sala de Aula</option>
@@ -24,8 +24,11 @@
                     <div class="mb-3">
                         <label for="capacidade" class="form-label">Capacidade</label>
                         <input type="number" class="form-control" name="capacidade" id="capacidade"
-                            placeholder="Digite a capacidade da sala">
+                        placeholder="Digite a capacidade da sala">
                     </div>
+                    {% if erro %}
+                     <p class="text-danger text-center mt-3">{{ erro }}</p>
+                    {% endif %}
                     <div class="mb-3">
                         <label for="descricao" class="form-label">Descrição</label>
                         <textarea class="form-control" name="descricao" id="descricao" rows="5"

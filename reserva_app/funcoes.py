@@ -40,7 +40,16 @@ def obter_dados_sala():
 
     return sala, data_inicio, hora_inicio, data_final, hora_final
 
-    # if "sala" in request.form:
+def conversao(infos):
+        """Converte uma string com data e hora usando a biblioteca datetime, com modelo de dia, mês e ano e hora e minuto"""
+        infos_convertida = datetime.fromisoformat(infos) #Converte a string infos em um objeto da biblioteca datetime
+
+        data = infos_convertida.strftime("%d-%m-%Y") #Modelo dia, mes, ano
+        hora = infos_convertida.strftime("%H:%M") #Modelo hora e minuto
+
+        return data, hora
+
+ # if "sala" in request.form:
     #     sala = request.form["sala"]
     # else:
     #     sala = None
@@ -61,10 +70,10 @@ def obter_dados_sala():
  
     # return sala, data_inicio, hora_inicio, data_final, hora_final
 
-def conversao(data_hora):
-    """Converte a string de data e hora em data e hora separadas"""
-    data, hora = data_hora.split("T")
-    return data, hora
+# def conversao(data_hora):
+#     """Converte a string de data e hora em data e hora separadas"""
+#     data, hora = data_hora.split("T")
+#     return data, hora
  
 def add_banco_reservas(nome,sobrenome,sala,data_inicio,hora_inicio,data_final,hora_final):
     """Adiciona os dados da sala no arquivo CSV conferindo se o cabeçalho está escrito."""
@@ -115,14 +124,6 @@ def procurar_reserva(nome, sobrenome):
         return False, None
     
 
-def conversao(infos):
-        """Converte uma string com data e hora usando a biblioteca datetime, com modelo de dia, mês e ano e hora e minuto"""
-        infos_convertida = datetime.fromisoformat(infos) #Converte a string infos em um objeto da biblioteca datetime
-
-        data = infos_convertida.strftime("%d-%m-%Y") #Modelo dia, mes, ano
-        hora = infos_convertida.strftime("%H:%M") #Modelo hora e minuto
-
-        return data, hora
 
 def formulario_cadastro_salas():
     """Pega tipo, capacidade e descricao de um formulário"""

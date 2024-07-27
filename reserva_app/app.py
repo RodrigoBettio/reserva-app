@@ -128,12 +128,16 @@ def minha_reserva():
     elif verificacao_usuario == True:
         return render_template("minha_reserva.html", reservas = reservas, nome_usuario = nome_usuario) 
         
-@app.route("/cadastrar_sala", methods = ["POST"])
+@app.route("/cadastrar_sala", methods = ["GET","POST"])
 def cadastro_sala():
     tipo, capacidade, descricao = formulario_cadastro_salas()
-    add_banco_salas (tipo,capacidade,descricao)
 
-    return render_template("reserva/detalhe_reserva.html", tipo = tipo, capacidade = capacidade, descricao = descricao)
+    if tipo == "Selecione um tipo..." or capacidade == "":
+        erro = "Preencha o tipo e a capacidade da sala para prosseguir com o cadastro!"
+        return render_template("cadastrar_sala.html", erro=erro)
+    else:
+        add_banco_salas (tipo,capacidade,descricao)
+    return render_template("listar_salas.html", tipo = tipo, capacidade = capacidade, descricao = descricao)
 
 app.secret_key = 'teste_sessao' 
 app.run(debug=True)
