@@ -92,6 +92,7 @@ def filtrar():
     
 #Rota usada para reserva de salas
 @app.route("/reservar_sala", methods =["GET", "POST"])
+
 def reservas_sala():
     if request.method == "POST":
         nome_usuario = session.get("nome_usuario")
@@ -109,11 +110,12 @@ def reservas_sala():
 #    nome_usuario = session.get("nome_usuario") 
 #    sobrenome_usuario = session.get("sobrenome_usuario") 
 #    sala, data_inicio, hora_inicio, data_final, hora_final = obter_dados_sala()   
-#    if sala == "" or data_inicio == "" or hora_inicio == "" or data_final == "" or hora_final == "":
+#    if sala == None or data_inicio == None or hora_inicio == None or data_final == None or hora_final == None:
 #        return render_template("reservar_sala.html", erro = "Você deve preencher todos os campos")
 #    else:
 #        add_banco_reservas (nome_usuario, sobrenome_usuario, sala, data_inicio, hora_inicio, data_final, hora_final)
 #        return render_template ("reserva/detalhe_reserva.html", nome_usuario = nome_usuario, sobrenome_usuario = sobrenome_usuario, sala = sala)
+
 
 @app.route("/minha_reserva")
 def minha_reserva():
