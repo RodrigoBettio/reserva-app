@@ -10,7 +10,7 @@
       </div>
       <div class="card-body">
         <p class="text-center">Utilize o formulário abaixo para reservar uma sala</p>
-        <form action="/reserva/detalhe_reserva" method="post">
+        <form action="/reservar_sala" method="post">
           <div class="mb-3">
             <label for="sala" class="form-label">Sala</label>
             <select class="form-select" id="sala" name="sala">
@@ -33,19 +33,11 @@
           </div>
         </form>
         {% if erro %}
-        <p class="text-danger">{{ erro }}</p>
+        <p class="text-danger text-center mt-3">{{ erro }}</p>
         {% endif %}
       </div>
     </div>
   </div>
 </div>
-
-*Reservar Sala*
-
-- No reservar sala, se clicar em reservar com todos os campos em branco ele dá erro (Nos outros requests não)
-- Se estiver faltando algum campo, também dá erro.
-- O formulário aceita 6 dígitos pra ano, que também gera erro na função 
-- Depois de cadastrar uma nova sala, ela deve aparecer diretamente no campo de sala (Tem que fazer um for no jinja pra ler as salas que existem)
-- Se a sala já estiver ocupada, o usuário não pode reservar (Acho que isso é adicional)
 
 {% endblock %}
