@@ -1,5 +1,5 @@
 from flask import Flask, render_template, request, session
-from reserva_app.funcoes import add_banco_usuarios, add_banco_reservas, obter_dados,obter_dados_sala, verificacao_usuario, procurar_reserva, formulario_cadastro_salas, add_banco_salas
+from reserva_app.funcoes import add_banco_usuarios, add_banco_reservas, obter_dados,obter_dados_sala, procurar_salas, verificacao_usuario, procurar_reserva, formulario_cadastro_salas, add_banco_salas
 import os
 
  
@@ -16,10 +16,6 @@ def cadastrar_sala():
 @app.route("/cadastro")
 def cadastro():
     return render_template ("cadastro.html")
-
-@app.route("/listar_salas")
-def listar_salas():
-    return render_template("listar_salas.html")
 
 @app.route("/reservar_sala")
 def reservar_sala():
@@ -92,7 +88,6 @@ def filtrar():
     
 #Rota usada para reserva de salas
 @app.route("/reservar_sala", methods =["GET", "POST"])
-
 def reservas_sala():
     if request.method == "POST":
         nome_usuario = session.get("nome_usuario")
@@ -107,16 +102,6 @@ def reservas_sala():
             return render_template("reserva/detalhe_reserva.html", nome_usuario=nome_usuario, sobrenome_usuario=sobrenome_usuario, sala=sala)
     return render_template("reservar_sala.html")
 
-#    nome_usuario = session.get("nome_usuario") 
-#    sobrenome_usuario = session.get("sobrenome_usuario") 
-#    sala, data_inicio, hora_inicio, data_final, hora_final = obter_dados_sala()   
-#    if sala == None or data_inicio == None or hora_inicio == None or data_final == None or hora_final == None:
-#        return render_template("reservar_sala.html", erro = "Você deve preencher todos os campos")
-#    else:
-#        add_banco_reservas (nome_usuario, sobrenome_usuario, sala, data_inicio, hora_inicio, data_final, hora_final)
-#        return render_template ("reserva/detalhe_reserva.html", nome_usuario = nome_usuario, sobrenome_usuario = sobrenome_usuario, sala = sala)
-
-
 @app.route("/minha_reserva")
 def minha_reserva():
     nome_usuario = session.get("nome_usuario") 
@@ -129,7 +114,7 @@ def minha_reserva():
         return render_template("minha_reserva.html", erro = "Não acredito que você ainda não possui reservas no nosso site :( ", reservas = None, nome_usuario = nome_usuario)
     elif verificacao_usuario == True:
         return render_template("minha_reserva.html", reservas = reservas, nome_usuario = nome_usuario) 
-        
+
 @app.route("/cadastrar_sala", methods = ["GET","POST"])
 def cadastro_sala():
     tipo, capacidade, descricao = formulario_cadastro_salas()
@@ -139,7 +124,25 @@ def cadastro_sala():
         return render_template("cadastrar_sala.html", erro=erro)
     else:
         add_banco_salas (tipo,capacidade,descricao)
-    return render_template("listar_salas.html", tipo = tipo, capacidade = capacidade, descricao = descricao)
+        salas = procurar_salas()
 
+    return render_template("listar_salas.html", salas = salas)
+
+@app.route("/listar_salas")
+def listar_salas():
+
+    tipo = session.get("tipo")
+    capacidade = session.get("capacidade")
+    descricao = session.get("descricao")
+
+    salas = procurar_salas()
+
+    if salas == None:
+        return render_template("listar_salas.html", erro = "Você ainda não possui nenhuma sala cadastrada!")
+    else: 
+        return render_template("listar_salas.html", salas = salas)
+    
 app.secret_key = 'teste_sessao' 
 app.run(debug=True)
+
+

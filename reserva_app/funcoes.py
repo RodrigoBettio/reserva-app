@@ -100,6 +100,19 @@ def add_banco_usuarios(nome, sobrenome, email, password):
         escritor_csv = csv.writer(arquivo_usuarios)
         escritor_csv.writerow([nome, sobrenome, email, password])
    
+def add_banco_salas(tipo,capacidade,descricao):
+    """Adiciona a salas no banco de dados (Arquivo.csv), recebendo um tipo, capacidade e descricao da sala"""
+
+    with open("csv/salas.csv", "r") as arquivo_salas:
+        if arquivo_salas.readline() == "":
+            with open("salas.csv", "a", newline="") as arquivo_salas:
+                escritor_csv = csv.writer(arquivo_salas)
+                escritor_csv.writerow(["tipo", "capacidade","descricao"])  
+
+    with open("csv/salas.csv", "a", newline="") as arquivo_salas:
+        escritor_csv = csv.writer(arquivo_salas)
+        escritor_csv.writerow([tipo, capacidade, descricao])
+
 def verificacao_usuario(email, password):
     """Verifica se os dados de email e password existem no banco de dados (No caso, arquivo csv)"""
     with open("csv/usuarios_cadastrados.csv", "r") as arquivo_usuarios:
@@ -109,21 +122,6 @@ def verificacao_usuario(email, password):
                 return True, linha ["nome"], linha["sobrenome"]
         return False, None, None
     
-def procurar_reserva(nome, sobrenome):
-    """Procura no arquivo usuarios_reserva, se existe alguma reserva no nome do usuário"""
-    reservas_encontradas = [] 
-    with open("csv/usuarios_reserva.csv", "r") as arquivo_reserva:
-        leitor_csv = csv.DictReader(arquivo_reserva)
-        for linha in leitor_csv:
-            if linha["nome"] == nome and linha["sobrenome"] == sobrenome:
-                reservas_encontradas.append(list(linha.values())) 
-
-    if reservas_encontradas: 
-        return True, reservas_encontradas
-    else:
-        return False, None
-    
-
 
 def formulario_cadastro_salas():
     """Pega tipo, capacidade e descricao de um formulário"""
@@ -144,16 +142,32 @@ def formulario_cadastro_salas():
 
     return tipo, capacidade, descricao
 
-def add_banco_salas(tipo,capacidade,descricao):
-    """Adiciona a salas no banco de dados (Arquivo.csv), recebendo um tipo, capacidade e descricao da sala"""
-
+    
+def procurar_salas():
+    """Procura no arquivo usuarios_reserva, se existe alguma reserva no nome do usuário"""
+    salas = [] 
     with open("csv/salas.csv", "r") as arquivo_salas:
-        if arquivo_salas.readline() == "":
-            with open("salas.csv", "a", newline="") as arquivo_salas:
-                escritor_csv = csv.writer(arquivo_salas)
-                escritor_csv.writerow(["tipo", "capacidade","descricao"])  
+        leitor_csv = csv.DictReader(arquivo_salas)
+        for linha in leitor_csv:
+            # if linha["tipo"] == tipo and linha["capacidade"] == capacidade and linha["descricao"] == descricao:
+                salas.append(list(linha.values())) 
 
-    with open("csv/salas.csv", "a", newline="") as arquivo_salas:
-        escritor_csv = csv.writer(arquivo_salas)
-        escritor_csv.writerow([tipo, capacidade, descricao])
+    if salas: 
+        return salas
+    else:
+        return None
+    
+def procurar_reserva(nome, sobrenome):
+    """Procura no arquivo usuarios_reserva, se existe alguma reserva no nome do usuário"""
+    reservas_encontradas = [] 
+    with open("csv/usuarios_reserva.csv", "r") as arquivo_reserva:
+        leitor_csv = csv.DictReader(arquivo_reserva)
+        for linha in leitor_csv:
+            if linha["nome"] == nome and linha["sobrenome"] == sobrenome:
+                reservas_encontradas.append(list(linha.values())) 
+
+    if reservas_encontradas: 
+        return True, reservas_encontradas
+    else:
+        return False, None
 
