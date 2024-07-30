@@ -1,5 +1,5 @@
 from flask import Flask, render_template, request, session
-from reserva_app.funcoes import add_banco_usuarios, add_banco_reservas, obter_dados,obter_dados_sala, procurar_salas, verificacao_usuario, procurar_reserva, formulario_cadastro_salas, add_banco_salas
+from reserva_app.funcoes import add_banco_usuarios, add_banco_reservas, obter_dados,obter_dados_sala, procurar_salas, verificacao_usuario, procurar_reserva, formulario_cadastro_salas, add_banco_salas, pegar_tipo_sala
 import os
 
  
@@ -89,10 +89,13 @@ def filtrar():
 #Rota usada para reserva de salas
 @app.route("/reservar_sala", methods =["GET", "POST"])
 def reservas_sala():
+    tipo_salas = pegar_tipo_sala()
+
     if request.method == "POST":
         nome_usuario = session.get("nome_usuario")
         sobrenome_usuario = session.get("sobrenome_usuario")
         sala, data_inicio, hora_inicio, data_final, hora_final = obter_dados_sala()
+
 
         if sala == None or data_inicio == None or hora_inicio == None or  data_final == None or  hora_final == None:    
             erro = "Preencha todos os campos!"
@@ -100,7 +103,7 @@ def reservas_sala():
         else:
             add_banco_reservas(nome_usuario, sobrenome_usuario, sala, data_inicio, hora_inicio, data_final, hora_final)
             return render_template("reserva/detalhe_reserva.html", nome_usuario=nome_usuario, sobrenome_usuario=sobrenome_usuario, sala=sala)
-    return render_template("reservar_sala.html")
+    return render_template("reservar_sala.html", tipo_salas = tipo_salas)
 
 @app.route("/minha_reserva")
 def minha_reserva():

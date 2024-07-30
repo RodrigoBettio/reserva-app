@@ -157,6 +157,19 @@ def procurar_salas():
     else:
         return None
     
+def pegar_tipo_sala():
+    tipo_salas = []
+    with open ("csv/salas.csv", "r") as arquivo_salas:
+        leitor_csv = csv.DictReader(arquivo_salas)
+        for linha in leitor_csv: 
+            tipo_salas.appendlist(list(linha.values()))
+
+    if tipo_salas:
+        return tipo_salas
+    else:
+        return None
+
+    
 def procurar_reserva(nome, sobrenome):
     """Procura no arquivo usuarios_reserva, se existe alguma reserva no nome do usuário"""
     reservas_encontradas = [] 

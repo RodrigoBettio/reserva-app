@@ -8,6 +8,7 @@
       <div class="card-header bg-light">
         <h1 class="text-center">Reservar Sala</h1>
       </div>
+      {{tipo_salas}}
       <div class="card-body">
         <p class="text-center">Utilize o formulário abaixo para reservar uma sala</p>
         <form action="/reservar_sala" method="post">
@@ -15,9 +16,9 @@
             <label for="sala" class="form-label">Sala</label>
             <select class="form-select" id="sala" name="sala">
               <option selected>Selecione a sala</option>
-              <option value="1">Sala 1</option>
-              <option value="2">Sala 2</option>
-              <option value="3">Sala 3</option>
+              {% for tipo in salas %}
+              <option value="1">{{tipo_salas}}</option>
+              {% endfor %}
             </select>
           </div>
           <div class="mb-3">
