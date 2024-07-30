@@ -41,4 +41,4 @@ Aplicação de exemplo para aulas sobre desenvolvimento web backend e criação 
   - ativa
   
 
-  Feito por Rodrigo Bettio, Leticia Rudeli, Lucas Milhomem e Rafael Oliveira
+  Feito por Rodrigo Bettio e Leticia Rudeli.
