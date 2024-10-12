@@ -1,5 +1,5 @@
 from flask import request
-import csv
+import csv, os
 from datetime import datetime
 
 def obter_dados():
@@ -77,11 +77,11 @@ def conversao(infos):
  
 def add_banco_reservas(nome,sobrenome,sala,data_inicio,hora_inicio,data_final,hora_final):
     """Adiciona os dados da sala no arquivo CSV conferindo se o cabeçalho está escrito."""
-    with open("csv/usuarios_reserva.csv", "r") as arquivo_reservas:
-        if arquivo_reservas.readline() == "":
-            with open("usuarios_reserva.csv", "a", newline="") as arquivo_reservas:
-                escritor_csv = csv.writer(arquivo_reservas)
-                escritor_csv.writerow(["nome","sobrenome", "sala", "data_inicio", "hora_inicio", "data_final", "hora_final"])  
+  
+    if not os.path.isfile("csv/usuarios_reserva.csv") or os.path.getsize("csv/usuarios_reserva.csv") == 0:
+        with open("usuarios_reserva.csv", "a", newline="") as arquivo_reservas:
+            escritor_csv = csv.writer(arquivo_reservas)
+            escritor_csv.writerow(["nome","sobrenome", "sala", "data_inicio", "hora_inicio", "data_final", "hora_final"])  
 
     with open("csv/usuarios_reserva.csv", "a", newline="") as arquivo_reservas:
         escritor_csv = csv.writer(arquivo_reservas)
@@ -90,24 +90,23 @@ def add_banco_reservas(nome,sobrenome,sala,data_inicio,hora_inicio,data_final,ho
 
 def add_banco_usuarios(nome, sobrenome, email, password):
     """Adiciona os dados do usuário no arquivo CSV conferindo se o cabeçalho está escrito."""
-    with open("csv/usuarios_cadastrados.csv", "r") as arquivo_usuarios:
-        if arquivo_usuarios.readline() == "":
-            with open("usuarios_cadastrados.csv", "a", newline="") as arquivo_usuarios:
-                escritor_csv = csv.writer(arquivo_usuarios)
-                escritor_csv.writerow(["nome","sobrenome", "email", "password"])  
+
+    if os.path.getsize("csv/usuarios_cadastrados.csv") == 0:
+        with open("usuarios_cadastrados.csv", "a", newline="") as arquivo_usuarios:
+            escritor_csv = csv.writer(arquivo_usuarios)
+            escritor_csv.writerow(["nome","sobrenome", "email", "password"])  
 
     with open("csv/usuarios_cadastrados.csv", "a", newline="") as arquivo_usuarios:
         escritor_csv = csv.writer(arquivo_usuarios)
         escritor_csv.writerow([nome, sobrenome, email, password])
    
-def add_banco_salas(tipo,capacidade,descricao):
-    """Adiciona a salas no banco de dados (Arquivo.csv), recebendo um tipo, capacidade e descricao da sala"""
+def add_banco_salas(tipo, capacidade, descricao):
+    """Adiciona salas no banco de dados (Arquivo.csv), recebendo um tipo, capacidade e descricao da sala"""
 
-    with open("csv/salas.csv", "r") as arquivo_salas:
-        if arquivo_salas.readline() == "":
-            with open("salas.csv", "a", newline="") as arquivo_salas:
-                escritor_csv = csv.writer(arquivo_salas)
-                escritor_csv.writerow(["tipo", "capacidade","descricao"])  
+    if os.path.getsize("csv/salas.csv") == 0:
+        with open("csv/salas.csv", "a", newline="") as arquivo_salas:
+            escritor_csv = csv.writer(arquivo_salas)
+            escritor_csv.writerow(["tipo", "capacidade", "descricao"])  
 
     with open("csv/salas.csv", "a", newline="") as arquivo_salas:
         escritor_csv = csv.writer(arquivo_salas)
