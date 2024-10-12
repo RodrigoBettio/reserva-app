@@ -12,16 +12,17 @@
       <div class="card-body">
         <form action="/filtrar" method="POST">
           <div class="row mt-4">
-            <div class="col">
+            <div class="col-md-5">
               <input type="text" class="form-control" placeholder="Nome" aria-label="Nome" name="nome" value="{{nome}}">
             </div>
-            <div class="col">
+            <div class="col-md-5">
               <input type="text" class="form-control" placeholder="Sobrenome" aria-label="Sobrenome" name="sobrenome">
             </div>
-            <div class="col">
-              <button class="btn btn-primary" type="submit">Filtrar</button>
+            <div class="col-md-2">
+              <button class="btn btn-primary w-100" type="submit">Filtrar</button>
             </div>
           </div>
+          
         </form>
         {% if reservas %}
         <div class="row mt-4">
