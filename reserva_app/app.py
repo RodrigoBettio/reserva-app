@@ -19,7 +19,8 @@ def cadastro():
 
 @app.route("/reservar_sala")
 def reservar_sala():
-    return render_template("reservar_sala.html")
+    tipo_salas = pegar_tipo_sala()
+    return render_template("reservar_sala.html", tipo_salas = tipo_salas)
 
 @app.route("/reservas")
 def reservas():
@@ -103,7 +104,6 @@ def reservas_sala():
         else:
             add_banco_reservas(nome_usuario, sobrenome_usuario, sala, data_inicio, hora_inicio, data_final, hora_final)
             return render_template("reserva/detalhe_reserva.html", nome_usuario=nome_usuario, sobrenome_usuario=sobrenome_usuario, sala=sala)
-    return render_template("reservar_sala.html", tipo_salas = tipo_salas)
 
 @app.route("/minha_reserva")
 def minha_reserva():

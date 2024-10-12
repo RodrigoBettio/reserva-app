@@ -157,14 +157,14 @@ def procurar_salas():
         return None
     
 def pegar_tipo_sala():
-    tipo_salas = []
+    tipo_salas = set()
     with open ("csv/salas.csv", "r") as arquivo_salas:
         leitor_csv = csv.DictReader(arquivo_salas)
         for linha in leitor_csv: 
-            tipo_salas.appendlist(list(linha.values()))
+            tipo_salas.add(linha["tipo"])
 
     if tipo_salas:
-        return tipo_salas
+        return list(tipo_salas)
     else:
         return None
 

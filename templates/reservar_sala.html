@@ -15,8 +15,8 @@
             <label for="sala" class="form-label">Sala</label>
             <select class="form-select" id="sala" name="sala">
               <option selected>Selecione a sala</option>
-              {% for tipo in salas %}
-              <option value="1">{{tipo_salas}}</option>
+              {% for i in range(tipo_salas|length) %}
+              <option value="{{ i + 1 }}"> {{tipo_salas[i]}} </option>
               {% endfor %}
             </select>
           </div>
@@ -29,7 +29,7 @@
             <input type="datetime-local" class="form-control" name="fim" id="fim">
           </div>
           <div class="text-center">
-            <button type="submit" class="btn btn-success">Reservar</button>
+            <button type="submit" class="btn btn-success mb-2">Reservar</button>
           </div>
         </form>
         {% if erro %}
