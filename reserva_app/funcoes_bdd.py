@@ -1,8 +1,8 @@
-from conexao_bd import conexao_abrir, conexao_fechar
+from reserva_app.conexao_bdd import conexao_abrir, conexao_fechar
 
 def cliente_listar(conexao):
     cursor = conexao.cursor()
-    sql = "SELECT * FROM t_cliente"
+    sql = "SELECT * FROM usuario"
 
     cursor = conexao.cursor(dictionary = True)
     cursor.execute(sql)
@@ -20,7 +20,7 @@ def cliente_inserir(conexao, codigo, nome, fone, email):
     cursor.close()
 
 def main():
-    conexao = conexao_abrir("localhost", "estudante1", "maravilha", "estudante1")
+    conexao = conexao_abrir("localhost", "estudante1", "maravilha", "reserva_app")
 
     cliente_inserir(conexao, 1,"Rodrigo","4274-9390","rodrigo@gmail.com")
     cliente_listar(conexao)

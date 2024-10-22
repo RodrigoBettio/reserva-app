@@ -1,4 +1,5 @@
 from flask import Flask, render_template, request, session
+from reserva_app.funcoes_bdd import *
 from reserva_app.funcoes import add_banco_usuarios, add_banco_reservas, obter_dados,obter_dados_sala, procurar_salas, verificacao_usuario, procurar_reserva, formulario_cadastro_salas, add_banco_salas, pegar_tipo_sala
 import os
 

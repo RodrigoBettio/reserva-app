@@ -49,32 +49,6 @@ def conversao(infos):
 
         return data, hora
 
- # if "sala" in request.form:
-    #     sala = request.form["sala"]
-    # else:
-    #     sala = None
-
-    # if "inicio" in request.form:
-    #     infos_inicio = request.form["inicio"]
-    #     data_inicio, hora_inicio = conversao(infos_inicio)
-
-    # else:
-    #     infos_inicio = None
-
-    # if "fim" in request.form:
-    #     infos_fim = request.form["fim"]
-    #     data_final, hora_final = conversao(infos_fim) 
- 
-    # else:
-    #     infos_fim = None
- 
-    # return sala, data_inicio, hora_inicio, data_final, hora_final
-
-# def conversao(data_hora):
-#     """Converte a string de data e hora em data e hora separadas"""
-#     data, hora = data_hora.split("T")
-#     return data, hora
- 
 def add_banco_reservas(nome,sobrenome,sala,data_inicio,hora_inicio,data_final,hora_final):
     """Adiciona os dados da sala no arquivo CSV conferindo se o cabeçalho está escrito."""
   
