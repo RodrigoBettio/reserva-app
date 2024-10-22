@@ -133,11 +133,6 @@ def cadastro_sala():
 
 @app.route("/listar_salas")
 def listar_salas():
-
-    tipo = session.get("tipo")
-    capacidade = session.get("capacidade")
-    descricao = session.get("descricao")
-
     salas = procurar_salas()
 
     if salas == None:

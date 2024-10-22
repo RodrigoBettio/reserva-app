@@ -13,12 +13,23 @@
         <form action="/reservar_sala" method="post">
           <div class="mb-3">
             <label for="sala" class="form-label">Sala</label>
+
+            {% if tipo_salas %}
+            {% for i in range(tipo_salas|length) %}
             <select class="form-select" id="sala" name="sala">
               <option selected>Selecione a sala</option>
-              {% for i in range(tipo_salas|length) %}
               <option value="{{ i + 1 }}"> {{tipo_salas[i]}} </option>
-              {% endfor %}
             </select>
+            {% endfor %}
+
+            {% else %}
+
+            <select class="form-select" id="sala" name="sala">
+              <option selected>Você ainda não possui sala cadastrada</option>
+            </select>
+
+            {%endif%}
+
           </div>
           <div class="mb-3">
             <label for="inicio" class="form-label">Data e Hora Início</label>

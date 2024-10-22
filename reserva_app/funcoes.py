@@ -79,7 +79,7 @@ def add_banco_reservas(nome,sobrenome,sala,data_inicio,hora_inicio,data_final,ho
     """Adiciona os dados da sala no arquivo CSV conferindo se o cabeçalho está escrito."""
   
     if not os.path.isfile("csv/usuarios_reserva.csv") or os.path.getsize("csv/usuarios_reserva.csv") == 0:
-        with open("usuarios_reserva.csv", "a", newline="") as arquivo_reservas:
+        with open("csv/usuarios_reserva.csv", "a", newline="") as arquivo_reservas:
             escritor_csv = csv.writer(arquivo_reservas)
             escritor_csv.writerow(["nome","sobrenome", "sala", "data_inicio", "hora_inicio", "data_final", "hora_final"])  
 
@@ -92,7 +92,7 @@ def add_banco_usuarios(nome, sobrenome, email, password):
     """Adiciona os dados do usuário no arquivo CSV conferindo se o cabeçalho está escrito."""
 
     if os.path.getsize("csv/usuarios_cadastrados.csv") == 0:
-        with open("usuarios_cadastrados.csv", "a", newline="") as arquivo_usuarios:
+        with open("csv/usuarios_cadastrados.csv", "a", newline="") as arquivo_usuarios:
             escritor_csv = csv.writer(arquivo_usuarios)
             escritor_csv.writerow(["nome","sobrenome", "email", "password"])  
 
@@ -148,8 +148,7 @@ def procurar_salas():
     with open("csv/salas.csv", "r") as arquivo_salas:
         leitor_csv = csv.DictReader(arquivo_salas)
         for linha in leitor_csv:
-            # if linha["tipo"] == tipo and linha["capacidade"] == capacidade and linha["descricao"] == descricao:
-                salas.append(list(linha.values())) 
+            salas.append(list(linha.values())) 
 
     if salas: 
         return salas
