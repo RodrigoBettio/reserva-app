@@ -1,5 +1,5 @@
 from flask import request
-import csv, os
+import csv, os, mysql.connector
 from datetime import datetime
 
 def obter_dados():
@@ -49,51 +49,47 @@ def conversao(infos):
 
         return data, hora
 
-def add_banco_reservas(nome,sobrenome,sala,data_inicio,hora_inicio,data_final,hora_final):
-    """Adiciona os dados da sala no arquivo CSV conferindo se o cabeçalho está escrito."""
-  
-    if not os.path.isfile("csv/usuarios_reserva.csv") or os.path.getsize("csv/usuarios_reserva.csv") == 0:
-        with open("csv/usuarios_reserva.csv", "a", newline="") as arquivo_reservas:
-            escritor_csv = csv.writer(arquivo_reservas)
-            escritor_csv.writerow(["nome","sobrenome", "sala", "data_inicio", "hora_inicio", "data_final", "hora_final"])  
+def add_banco_reservas(conexao, nome, sobrenome, sala, data_inicio, hora_inicio, data_final, hora_final):
+    """Adiciona os dados da reserva no banco de dados MySQL"""
+    cursor = conexao.cursor()
+    sql = """INSERT INTO reservas (nome, sobrenome, sala, data_inicio, hora_inicio, data_final, hora_final) 
+             VALUES (%s, %s, %s, %s, %s, %s, %s)"""
+    cursor.execute(sql, (nome, sobrenome, sala, data_inicio, hora_inicio, data_final, hora_final))
+    conexao.commit()
+    cursor.close()
 
-    with open("csv/usuarios_reserva.csv", "a", newline="") as arquivo_reservas:
-        escritor_csv = csv.writer(arquivo_reservas)
-        escritor_csv.writerow([nome, sobrenome, sala, data_inicio, hora_inicio, data_final, hora_final])
+
+
+def add_banco_usuarios(conexao, nome, sobrenome, email, password):
+    """Adiciona os dados do usuário no banco de dados MySQL"""
+    cursor = conexao.cursor()
+    sql = "INSERT INTO usuarios (nome, sobrenome, email, password) VALUES (%s, %s, %s, %s)"
+    cursor.execute(sql, (nome, sobrenome, email, password))
+    conexao.commit()
+    cursor.close()
+
    
+def add_banco_salas(conexao, tipo, capacidade, descricao):
+    """Adiciona uma sala no banco de dados MySQL"""
+    cursor = conexao.cursor()
+    sql = "INSERT INTO salas (tipo, capacidade, descricao) VALUES (%s, %s, %s)"
+    cursor.execute(sql, (tipo, capacidade, descricao))
+    conexao.commit()
+    cursor.close()
 
-def add_banco_usuarios(nome, sobrenome, email, password):
-    """Adiciona os dados do usuário no arquivo CSV conferindo se o cabeçalho está escrito."""
 
-    if os.path.getsize("csv/usuarios_cadastrados.csv") == 0:
-        with open("csv/usuarios_cadastrados.csv", "a", newline="") as arquivo_usuarios:
-            escritor_csv = csv.writer(arquivo_usuarios)
-            escritor_csv.writerow(["nome","sobrenome", "email", "password"])  
+def verificacao_usuario(conexao, email, password):
+    """Verifica se o usuário está no banco de dados MySQL"""
+    cursor = conexao.cursor(dictionary=True)
+    sql = "SELECT * FROM usuarios WHERE email = %s AND password = %s"
+    cursor.execute(sql, (email, password))
+    usuario = cursor.fetchone() #Retorna a primeira linha encontrada
+    cursor.close()
 
-    with open("csv/usuarios_cadastrados.csv", "a", newline="") as arquivo_usuarios:
-        escritor_csv = csv.writer(arquivo_usuarios)
-        escritor_csv.writerow([nome, sobrenome, email, password])
-   
-def add_banco_salas(tipo, capacidade, descricao):
-    """Adiciona salas no banco de dados (Arquivo.csv), recebendo um tipo, capacidade e descricao da sala"""
+    if usuario:
+        return True, usuario['nome'], usuario['sobrenome']
+    return False, None, None
 
-    if os.path.getsize("csv/salas.csv") == 0:
-        with open("csv/salas.csv", "a", newline="") as arquivo_salas:
-            escritor_csv = csv.writer(arquivo_salas)
-            escritor_csv.writerow(["tipo", "capacidade", "descricao"])  
-
-    with open("csv/salas.csv", "a", newline="") as arquivo_salas:
-        escritor_csv = csv.writer(arquivo_salas)
-        escritor_csv.writerow([tipo, capacidade, descricao])
-
-def verificacao_usuario(email, password):
-    """Verifica se os dados de email e password existem no banco de dados (No caso, arquivo csv)"""
-    with open("csv/usuarios_cadastrados.csv", "r") as arquivo_usuarios:
-        leitor_csv = csv.DictReader(arquivo_usuarios)
-        for linha in leitor_csv:
-            if linha["email"] == email and linha["password"] == password:
-                return True, linha ["nome"], linha["sobrenome"]
-        return False, None, None
     
 
 def formulario_cadastro_salas():
@@ -116,43 +112,52 @@ def formulario_cadastro_salas():
     return tipo, capacidade, descricao
 
     
-def procurar_salas():
-    """Procura no arquivo usuarios_reserva, se existe alguma reserva no nome do usuário"""
-    salas = [] 
-    with open("csv/salas.csv", "r") as arquivo_salas:
-        leitor_csv = csv.DictReader(arquivo_salas)
-        for linha in leitor_csv:
-            salas.append(list(linha.values())) 
+def procurar_salas(conexao):
+    """Procura no banco de dados MySQL todas as salas cadastradas"""
+    salas = []
+    cursor = conexao.cursor(dictionary=True)
+    sql = "SELECT * FROM salas"
+    cursor.execute(sql)
+    resultados = cursor.fetchall() #Retorna todas as linhas da consulta como uma lista de tuplas.
+    cursor.close()
 
-    if salas: 
+    if resultados:
+        for sala in resultados:
+            salas.append(list(sala.values())) 
         return salas
     else:
         return None
     
-def pegar_tipo_sala():
+def pegar_tipo_sala(conexao):
+    """Obtém todos os tipos de salas únicos do banco de dados MySQL"""
     tipo_salas = set()
-    with open ("csv/salas.csv", "r") as arquivo_salas:
-        leitor_csv = csv.DictReader(arquivo_salas)
-        for linha in leitor_csv: 
-            tipo_salas.add(linha["tipo"])
+    cursor = conexao.cursor(dictionary=True)
+    sql = "SELECT DISTINCT tipo FROM salas"
+    cursor.execute(sql)
+    resultados = cursor.fetchall() #Retorna todas as linhas da consulta como uma lista de tuplas.
+    cursor.close()
 
-    if tipo_salas:
+    if resultados:
+        for tipo in resultados:
+            tipo_salas.add(tipo['tipo'])  
         return list(tipo_salas)
     else:
         return None
 
-    
-def procurar_reserva(nome, sobrenome):
-    """Procura no arquivo usuarios_reserva, se existe alguma reserva no nome do usuário"""
-    reservas_encontradas = [] 
-    with open("csv/usuarios_reserva.csv", "r") as arquivo_reserva:
-        leitor_csv = csv.DictReader(arquivo_reserva)
-        for linha in leitor_csv:
-            if linha["nome"] == nome and linha["sobrenome"] == sobrenome:
-                reservas_encontradas.append(list(linha.values())) 
 
-    if reservas_encontradas: 
+    
+def procurar_reserva(conexao, nome, sobrenome):
+    """Procura no banco de dados MySQL se existe alguma reserva no nome do usuário"""
+    reservas_encontradas = []
+    cursor = conexao.cursor(dictionary=True)
+    sql = "SELECT * FROM reservas WHERE nome = %s AND sobrenome = %s"
+    cursor.execute(sql, (nome, sobrenome))
+    resultados = cursor.fetchall() #Retorna todas as linhas da consulta como uma lista de tuplas.
+    cursor.close()
+
+    if resultados:
+        for reserva in resultados:
+            reservas_encontradas.append(list(reserva.values()))
         return True, reservas_encontradas
     else:
         return False, None
-
