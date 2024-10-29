@@ -35,7 +35,7 @@ def detalhe_reserva():
 #Rota usada para cadastro de usuários
 @app.route("/cadastro", methods = ['POST'])
 def cadastrar_usuario():
-    nome, sobrenome, email, password = obter_dados()
+    nome, sobrenome, email, senha = obter_dados()
     if nome == "":
         return render_template("cadastro.html", erro = "Você não tem nome?")
     
@@ -45,28 +45,28 @@ def cadastrar_usuario():
     elif email == "":
         return render_template("cadastro.html", erro = "Esse email não existe", nome = nome, sobrenome = sobrenome)
     
-    elif password == "":
+    elif senha == "":
         return render_template("cadastro.html", erro = "Última vez que não coloquei senha em algo não tive um bom resultado...", nome = nome, sobrenome = sobrenome, email = email)
     
     else:
-        conexao = conexao_abrir
-        add_banco_usuarios(conexao,nome, sobrenome, email, password)
+        conexao = conexao_abrir("localhost", "estudante1", "123", "reserva_app")
+        add_banco_usuarios(conexao,nome, sobrenome, email, senha)
         conexao.close()
     return render_template("login.html")
 
 #Rota usada para ler infos do login
 @app.route("/", methods = ['POST'])
 def login():
-    _,_,email, password = obter_dados()
-    conexao = conexao_abrir()
-    if email == "" and password == "":
+    _,_,email, senha = obter_dados()
+    conexao = conexao_abrir("localhost", "estudante1", "123", "reserva_app")
+    if email == "" and senha == "":
         return render_template ("login.html", erro = "Você deve inserir um email e senha")
     elif email == "":
         return render_template ("login.html", erro = "Você deve inserir um email")
-    elif password == "":
+    elif senha == "":
         return render_template ("login.html", erro = "Você deve inserir uma senha", email = email)
     else:
-        verifica_resultado, nome_usuario, sobrenome_usuario = verificacao_usuario(conexao, email, password)
+        verifica_resultado, nome_usuario, sobrenome_usuario = verificacao_usuario(conexao, email, senha)
         conexao.close()
         if verifica_resultado:
             session["nome_usuario"] = nome_usuario

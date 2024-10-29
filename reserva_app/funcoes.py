@@ -3,7 +3,7 @@ import csv, os, mysql.connector
 from datetime import datetime
 
 def obter_dados():
-    """Obtem nome, sobrenome, email e password de um formulário e retorna os mesmos"""
+    """Obtem nome, sobrenome, email e senha de um formulário e retorna os mesmos"""
     if "nome" in request.form:
         nome = request.form['nome'] 
         nome = nome.title().strip()
@@ -22,11 +22,11 @@ def obter_dados():
     else: 
         email = None  
     
-    if "password" in request.form:
-        password = request.form['password']
+    if "senha" in request.form:
+        senha = request.form['senha']
     else: 
-        password = None
-    return nome, sobrenome, email, password
+        senha = None
+    return nome, sobrenome, email, senha
 
 def obter_dados_sala():
     """Obtem os dados de um formulário com infos de uma reserva de sala e retorna os mesmos"""
@@ -60,11 +60,11 @@ def add_banco_reservas(conexao, nome, sobrenome, sala, data_inicio, hora_inicio,
 
 
 
-def add_banco_usuarios(conexao, nome, sobrenome, email, password):
+def add_banco_usuarios(conexao, nome, sobrenome, email, senha):
     """Adiciona os dados do usuário no banco de dados MySQL"""
     cursor = conexao.cursor()
-    sql = "INSERT INTO usuarios (nome, sobrenome, email, password) VALUES (%s, %s, %s, %s)"
-    cursor.execute(sql, (nome, sobrenome, email, password))
+    sql = "INSERT INTO usuarios (nome, sobrenome, email, senha) VALUES (%s, %s, %s, %s)"
+    cursor.execute(sql, (nome, sobrenome, email, senha))
     conexao.commit()
     cursor.close()
 
@@ -78,11 +78,11 @@ def add_banco_salas(conexao, tipo, capacidade, descricao):
     cursor.close()
 
 
-def verificacao_usuario(conexao, email, password):
+def verificacao_usuario(conexao, email, senha):
     """Verifica se o usuário está no banco de dados MySQL"""
     cursor = conexao.cursor(dictionary=True)
-    sql = "SELECT * FROM usuarios WHERE email = %s AND password = %s"
-    cursor.execute(sql, (email, password))
+    sql = "SELECT * FROM usuarios WHERE email = %s AND senha = %s"
+    cursor.execute(sql, (email, senha))
     usuario = cursor.fetchone() #Retorna a primeira linha encontrada
     cursor.close()
 
